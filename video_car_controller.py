@@ -135,6 +135,7 @@ class Controller:
                 if not ret:
                     print('Could not read frame.')
                     break
+                cap.release()
 
                 results = model(frame)
                 # cv2.imshow(win_name, np.asarray(results.imgs[0], dtype=np.uint8))

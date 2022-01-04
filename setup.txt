@@ -1,3 +1,6 @@
+##############################
+# Install pytorch on pc (with spacemacs)
+##############################
 $ sudo apt install python3.8-venv
 $ cd ~/virtualenv_environments/
 $ python3 -m venv py38_yolov5_pytorch
@@ -12,3 +15,72 @@ pip3 install "ptvsd>=4.2"
 (py38_yolov5_pytorch)$ pip install -qr https://raw.githubusercontent.com/ultralytics/yolov5/master/requirements.txt
 
 (py38_yolov5_pytorch)$ pip3 install iPython
+
+#####################################
+# Install pytorch in raspberry pi
+#####################################
+
+$ cd ~/virtualenv_environments/
+$ python3 -m venv py38_yolov5_pytorch
+$ sourch py38_yolov5_pytorch/bin/activate
+
+# debug in spacemacs
+pip3 install "ptvsd>=4.2"
+
+# (from https://www.spinellis.gr/blog/20200317/index.html)
+# 1. install dependencies.
+$ sudo apt-get install libopenblas-dev libblas-dev m4 cmake cython python3-dev python3-yaml python3-setuptools
+
+# 2. clone repository
+# (--depth=1 to save the bandwidth of copying unneeded past history)
+$ git clone --depth=1 --recursive https://github.com/pytorch/pytorch
+cd pytorch
+
+# 3. bug fix
+# (in protobuf that prevents the compilation)
+# (update to current version)
+$ git submodule update --remote third_party/protobuf
+
+# 4. configure swap space (if you have 1MB of RAM in your raspberry pi (3B+))
+# (to see how much RAM you have:
+# (under SIZE entry) (need at least 2GB, other wise configure)
+$ /sbin/swapon
+# # Create a 2GB swap file
+$ sudo dd if=/dev/zero of=/swap0 bs=1M count=2048
+# # Format it for swapping
+$ sudo mkswap /swap0
+# # Configure the system to use it for swapping
+$ sudo sh -c 'echo /swap0 swap swap' >>/etc/fstab`
+# # Make this take effect now
+$ sudo swapon -a
+
+# 5. configure the build process
+# (the environment variables derived from setup.py - do it yourself to verify they still current)
+# # save variables in script (to feed to source) (e.g. source my-variables.sh in every loging to pi) (compile pytorch)
+# # test the results on the pi, with the results tested with the more powerful platform (on which it was tested, e.g. pc)
+# # MAX_JOBS is the most important variable (default run (num_cpu - 1) jobs in parallel, num_cpu = number of cores)
+# # (in 1MB RAM pi, the RAM run out, and swap is used)
+# # (compilation processes compete for the swap space, it increases tremendously the disk I/O, and slow compilation process almost to a halt)
+# # (with 2 (rather than 3) parallel jobs, a few tens of MB RAM always remained free)
+
+# Limit the number of parallel jobs in a 1MB Pi to prevent thrashing
+$ export MAX_JOBS=2
+
+# Disable features that don't make sense on a Pi
+$ export USE_CUDA=0
+$ export USE_CUDNN=0
+$ export USE_MKLDNN=0
+$ export USE_NNPACK=0
+$ export USE_QNNPACK=0
+$ export USE_DISTRIBUTED=0
+
+# Disable testing, which takes ages
+$ export BUILD_TEST=0
+
+# 6. start build process (may take more than 12 hours)
+$ python3 setup.py build
+# (run the command with 'nohup', will run in background even if connection to pi is interrupted,
+$ tail -f nohup.out (to see the compilatin results)
+
+# 7. install the compiled files
+$ sudo -E python3 setup.py install
