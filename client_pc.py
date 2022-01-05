@@ -8,6 +8,10 @@ import numpy as np
 #import RPi.GPIO as GPIO
 #GPIO.setmode(GPIO.BOARD)
 
+class ClientType(Enum):
+    RPI = 0
+    PC = 1
+
 HEADERSIZE = 10
 
 class MessageType(Enum):
@@ -129,6 +133,6 @@ class RPIController():
         return frame
 if __name__ == '__main__':
     ip = socket.gethostname()
-    port = 1244
+    port = 1242
     client = Client_RPI(ip, port)
     client.start()

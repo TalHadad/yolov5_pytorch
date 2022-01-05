@@ -1,4 +1,4 @@
-# client_raspi.py
+# client_raspi_2.py
 from enum import Enum
 import socket
 import pickle
@@ -33,7 +33,7 @@ class Client_RPI():
             except:
                 self.controller.clean_exit()
 
-    def connect_socket(self, ip:str, port:int ):
+    def connect_socket(self, ip, port):
         try:
             self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.server_socket.connect((ip, port))
@@ -196,6 +196,6 @@ class RPIController():
         return frame
 if __name__ == '__main__':
     ip = socket.gethostname()
-    port = 1234
+    port = 1242
     client = Client_RPI(ip, port)
     client.start()
