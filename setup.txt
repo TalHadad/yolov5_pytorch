@@ -21,6 +21,9 @@ pip3 install "ptvsd>=4.2"
 # (1) (from https://www.spinellis.gr/blog/20200317/index.html)
 # (2) (and https://github.com/NikhilKanda/Pytorch-on-Raspberry-PI-3B/blob/master/How%20to%20install%20PyTorch%20on%20Raspberry%20Pi%203B.md)
 #####################################
+(1) DID NOT WORK for me, makefile error 2
+(2) WORKING
+
 (2) To install pytorch on rpi, you have to compile it from source, there is no pre-compiled binary for ARMv7/ARMhf
 
 $ cd ~/virtualenv_environments/
@@ -35,7 +38,8 @@ pip3 install "ptvsd>=4.2"
 $ sudo apt-get install libopenblas-dev cython libblas-dev m4 cmake python3-dev python3-yaml python3-setuptools
 
 (2)
-$ sudo apt-get install libopenblas-dev cython libblas-dev m4 libatlas-dev
+$ sudo apt-get install libopenblas-dev cython libblas-dev m4 libatlas-base-dev
+(libatlas-dev has no installation candidate, libatlas-base-dev replace it)
 
 (1)(2) # 2. clone repository
 (1)
@@ -88,14 +92,14 @@ $ htop
 # There are 2 ways to do this:
 
 # 1. Through /etc/fstab
-$ sudo dd if=/dev/zero of=/swap1 bs=1M count=2048
+$ sudo dd if=/dev/zero of=/swap1 bs=1M count=2048 (for me count=4096, due to 32GB SD card)
 # make this file into a swap-compatible file
 $ sudo mkswap /swap1
 # disable the old swap space and enable the new one
 $ sudo nano /etc/fstab
 # change the last line from /swap0 swap swap to: (write as last line)
 /swap1 swap swap
-C-o (save) C-x (exit nano)
+C-o (save) Enter (confirm) C-x (exit nano)
 # manually turn off and empty the old swap space and enable the new one (and not wait for reboot)
 $ sudo swapoff /swap0
 $ sudo swapon /swap1
@@ -107,11 +111,12 @@ CONF_SWAPSIZE = 2048
 $ sudo /etc/init.d/dphys-swapfile stop
 $ sudo /etc/init.d/dphys-swapfile start
 
-
+(1)(2) if you did (1) and (2)fstab, then undo (1) with:
+$ rm /swap0
 
 (1) # 5. configure the build process
 (2) # 4. set compiler flags
-(1
+(1)
 # (the environment variables derived from setup.py - do it yourself to verify they still current)
 # # save variables in script (to feed to source) (e.g. source my-variables.sh in every loging to pi) (compile pytorch)
 # # test the results on the pi, with the results tested with the more powerful platform (on which it was tested, e.g. pc)
@@ -138,11 +143,9 @@ $ export BUILD_TEST=0
 # CUDA is required for GPU access, since RPI doesn't have a GPU, we set No cuda to 1
 $ export NO_CUDA=1
 # distributed process parallelizes the computations across processes and clusters of machines
-$ export NO_DISTRIBU
-# MKLDNN expedites the computations, but NO_MKLDNN has to be set for error free compilation (don't know why)TED=1
+$ export NO_DISTRIBUTED=1
+# MKLDNN expedites the computations, but NO_MKLDNN has to be set for error free compilation (don't know why)
 $ export NO_MKLDNN=1
-
-(1)(2) conflict with NO_MKLDNN=1/0
 
 (1)(2) # 6. start build process (may take more than 12 hours)
 (1)
@@ -152,7 +155,7 @@ $ tail -f nohup.out (to see the compilatin results)
 
 (2)
 $ cd pytorch_rpi/pytorch
-$ python setup.py build
+$ python3 setup.py build
 
 (1) # 7. install the compiled files
 (2) # 6. test
