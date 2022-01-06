@@ -2,10 +2,10 @@ import socket
 import RPi.GPIO as GPIO
 import time
 
-listen_s = socket.socket()
+s = socket.socket()
 
 ip = ''
-port = 8002
+port = 8001
 max_connections = 5
 
 s.connect((ip, port))
@@ -14,7 +14,7 @@ GPIO.setmode(GPIO.BOARD)
 GPIO.setup(7, GPIO.OUT)
 
 while True:
-      x = raw_input("Enter message: ")
+      x = input("Enter message: ")
       s.send(x.encode())
 
       GPIO.output(7, True)

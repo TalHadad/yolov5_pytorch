@@ -4,9 +4,22 @@ $ setxkbmap -option "ctrl:nocaps"
 M-CL(C)-t (open terminal)
 $ emacs
 SPC g s F p (git pull)
+SPC f l (load file)
+select client_simple_raspi.py
+SPC SPC python-mode RET
+insert ip = '...'
+port = ...
 
 
+(In PC:
+    $ source ~/virtualenv_environments/py38_yolov5_pytorch/bin/activate
+    $ cd ~/Desktop/yolov5_pytorch
+    (set port to ... in server_pc.py)
+    $ python3 server_pc.py
+)
 
 M-C-t (open terminal)
 $ cd ~/Desktop/yolov5_pytorch
-$ sudo pytho client_raspi.py
+$ source ~/Desktop/test_env/bin/activate
+(cv2 and tensorflow installed in this env)
+$ sudo python client_simple_raspi.py
