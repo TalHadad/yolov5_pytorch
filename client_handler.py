@@ -6,11 +6,7 @@ import cv2
 import time
 import numpy as np
 
-HEADERSIZE = 10
-
-class MessageType(Enum):
-    WELCOME = "welcome to the server"
-    CLOSE = "closing connection"
+from server_handler import MessageType, HEADERSIZE
 
 class Client():
 

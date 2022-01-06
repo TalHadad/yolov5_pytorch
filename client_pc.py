@@ -6,14 +6,15 @@ import cv2
 import time
 import numpy as np
 
-import client_handler
+from client_handler import Client, Controller
 
-class Client_PC(client_handler.Client):
+
+class Client_PC(Client):
 
     def __init__(self, ip, port: int):
         super().__init__(ip, port, controller=Controller_PC())
 
-class Controller_PC(client_handler.Controller):
+class Controller_PC(Controller):
     pass
 
 if __name__ == '__main__':

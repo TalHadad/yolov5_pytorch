@@ -9,15 +9,15 @@ import numpy as np
 import RPi.GPIO as GPIO
 GPIO.setmode(GPIO.BOARD)
 
-import client_handler
+from client_handler import Client, Controller
 
-class Client_RPI(client_handler.Client):
+class Client_RPI(Client):
 
     def __init__(self, ip, port: int):
         super().__init__(ip, port, controller=Controller_RPI())
 
 
-class Controller_RPI(client_handler.Controller):
+class Controller_RPI(Controller):
 
     def __init__(self):
         self.backward_pin = 11 # white_pin
