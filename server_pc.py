@@ -11,11 +11,11 @@ from server_handler import Server, Analyzer
 
 class Server_PC(Server):
     def __init__(self, ip, port: int, target):
-        super().__init__(ip, port, analyzer=Analyzer_PC(target))
+        super().__init__(ip, port, analyzer=Analyzer_PC())
 
 class Analyzer_PC(Analyzer):
-    def __init__(self, target: str):
-        super().__init(target)
+    def __init__(self):
+        super().__init__()
 
         self.model = torch.hub.load('ultralytics/yolov5', 'yolov5s', pretrained=True)
         self.previous_x = 0

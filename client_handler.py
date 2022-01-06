@@ -10,7 +10,7 @@ from server_handler import MessageType, HEADERSIZE
 
 class Client():
 
-    def __init__(self, ip, port: int, controller: Controller):
+    def __init__(self, ip, port: int, controller):
         self.connect_socket(ip, port)
         self.controller = controller
 

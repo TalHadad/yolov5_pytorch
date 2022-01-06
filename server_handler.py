@@ -16,7 +16,7 @@ class MessageType(Enum):
     CLOSE = "closing connection"
 
 class Server():
-    def __init__(self, ip, port: int, analyzer=Analyzer()):
+    def __init__(self, ip, port: int, analyzer):
         self.bind_socket(ip, port)
         self.analyzer = analyzer
 
