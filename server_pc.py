@@ -105,8 +105,8 @@ class Analyzer():
 
 if __name__ == '__main__':
     #ip = socket.gethostname()
-    ip = 'unknown'
-    port = 1215
+    ip = '192.168.1.106'
+    port = 8003
     target = 'person'
     server = Server_PC(ip, port, target)
     server.start()
