@@ -14,8 +14,11 @@ pip3 install "ptvsd>=4.2"
 # install dependencies (from https://pytorch.org/hub/ultralytics_yolov5/)
 (py38_yolov5_pytorch)$ pip install -qr https://raw.githubusercontent.com/ultralytics/yolov5/master/requirements.txt
 
-(py38_yolov5_pytorch)$ pip3 install iPython
+(py38_yolov5_pytorch)$ pip3 install iPytho
 
+for showing conv results:
+$ pip3 install torchvision
+$ pip3 install imageio
 #####################################
 # Install pytorch in raspberry pi
 # (1) (from https://www.spinellis.gr/blog/20200317/index.html)

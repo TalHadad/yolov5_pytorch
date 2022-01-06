@@ -40,7 +40,7 @@ def analyze_cv_single_picture():
             #results.save()  # or .show()
             #results.show()
             #results.xyxy[0]
-            # cv2.imshow(win_name, np.asarray(results.imgs[0], dtype=np.uint8))
+            cv2.imshow('result', np.asarray(results.imgs[0], dtype=np.uint8))
             print(f'results.pandas().xyxy[0]:\n{results.pandas().xyxy[0]}')  # img1 predictions (pandas)
             #      xmin    ymin    xmax   ymax  confidence  class    name
             # 0  749.50   43.50  1148.0  704.5    0.874023      0  person

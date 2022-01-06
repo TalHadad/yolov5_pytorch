@@ -1,10 +1,12 @@
 
 # server.py
 from enum import Enum
+import cv2
 import socket
 import time
 import pickle
 import torch
+import numpy as np
 
 HEADERSIZE = 10
 
@@ -71,8 +73,16 @@ class Analyzer():
     def process_image(self, frame):
         ret = (0, 0, 0, 0)
         start = time.time()
+        cv2.imshow('frame', frame)
+
 
         results = self.model(frame)
+        cv2.imshow('detection result', np.asarray(results.imgs[0], dtype=np.uint8))
+        cv2.imshow('result', np.asarray(results.xyxy[0], dtype=np.uint8))
+        #results.show()
+        if cv2.waitKey(1) == ord('q'):
+            cv2.destroyAllWindows()
+
         results_df = results.pandas().xyxy[0]
         print(f'results_df:\n{results_df}')  # img1 predictions (pandas)
 
