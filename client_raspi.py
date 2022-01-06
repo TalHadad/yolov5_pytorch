@@ -195,7 +195,7 @@ class RPIController():
         cap.release()
         return frame
 if __name__ == '__main__':
-    ip = socket.gethostname()
-    port = 1234
+    ip = '192.168.1.106'
+    port = 8003
     client = Client_RPI(ip, port)
     client.start()
