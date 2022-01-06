@@ -1,5 +1,12 @@
 M-C-t (open terminal)
 $ setxkbmap -option "ctrl:nocaps"
+
+M-CL(C)-t (open terminal)
 $ emacs
+SPC g s F p (git pull)
+
+
+
+M-C-t (open terminal)
 $ cd ~/Desktop/yolov5_pytorch
 $ sudo pytho client_raspi.py
