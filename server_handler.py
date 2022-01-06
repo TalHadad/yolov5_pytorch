@@ -16,6 +16,7 @@ class MessageType(Enum):
 
 class Server():
     def __init__(self, ip, port: int, analyzer):
+        print(f'binding server to {ip}:{port}')
         self.bind_socket(ip, port)
         self.analyzer = analyzer
 

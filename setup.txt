@@ -19,6 +19,12 @@ pip3 install "ptvsd>=4.2"
 for showing conv results:
 $ pip3 install torchvision
 $ pip3 install imageio
+
+to use model playground
+$ pip3 install jupyter
+$ ipython kernel install --user --name=py38_yolov5_pytorch
+$ jupyter notebook
+
 #####################################
 # Install pytorch in raspberry pi
 # (1) (from https://www.spinellis.gr/blog/20200317/index.html)
