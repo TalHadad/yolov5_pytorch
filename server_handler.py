@@ -1,4 +1,6 @@
 # server_handler.py
+from abc import ABC, abstractmethod
+
 from enum import Enum
 import cv2
 import socket
@@ -62,25 +64,48 @@ class Server():
                     new_msg = True
                     full_msg = b''
 
-class Analyzer():
+class Analyzer(ABC):
     def __init__(self):
         self.target = TARGET
         print(f'target is : {self.target}')
 
-    def process_image(self, frame):
-        ret = (0, 0, 0, 0)
-        start = time.time()
-        cv2.imshow('frame', frame)
+        self.model = self.get_model()
+        print(f'build model')
 
-        ret = self.analyze(frame)
+        self.x = 0
+        self.y = 0
+
+    @abstractmethod
+    def get_model(self):
+        pass
+
+    def process_image(self, frame):
+        coords_diff = (0, 0, 0, 0)
+        start = time.time()
+
+        labeled_img = self.get_labeled_image(frame)
+        cv2.imshow('result', np.asarray(labeled_img, dtype=np.uint8))
+        #if cv2.waitKey(1) == ord('q'):
+        #    cv2.destroyAllWindows()
+        cv2.waitKey(1)
+
+        current_x, current_y = self.get_target_coords()
+        if current_x!=0 or current_y!=0:
+            print(f'found {self.target} in x={current_x} and y={current_y}')
+            coords_diff = self.x, self.y, current_x, current_y
+            self.x = current_x
+            self.y = current_y
 
         self.print_time(start)
 
-        return ret
+        return coords_diff
 
-    def analyze(self, frame):
-        # Should be implemented in child class
-        return (0, 0, 0, 0)
+    @abstractmethod
+    def get_labeled_image(self, frame):
+        pass
+    @abstractmethod
+    def get_target_coords(self):
+        pass
 
     def print_time(self, start):
 

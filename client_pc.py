@@ -19,6 +19,6 @@ class Controller_PC(Controller):
 
 if __name__ == '__main__':
     ip = '192.168.1.106'
-    port = 8003
+    port = 8005
     client = Client_PC(ip, port)
     client.start()

@@ -31,7 +31,7 @@ class Client():
         try:
             self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.server_socket.connect((ip, port))
-            print ("Socket successfully created")
+            print (f'connection client to {ip}:{port}')
         except socket.error as err:
             print ("socket creation failed with error %s" %(err))
 
