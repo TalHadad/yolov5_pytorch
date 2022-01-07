@@ -24,10 +24,11 @@ class Client():
             self.controller.clean_exit()
         else:
             previous_x, previous_y, current_x, current_y = msg
-            try:
-                self.controller.move_car(previous_x, previous_y, current_x, current_y)
-            except:
-                self.controller.clean_exit()
+            self.controller.move_car(previous_x, previous_y, current_x, current_y)
+            #try:
+            #    self.controller.move_car(previous_x, previous_y, current_x, current_y)
+            #except:
+            #    self.controller.clean_exit()
 
     def connect_socket(self, ip:str, port:int ):
         try:
