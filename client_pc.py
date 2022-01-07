@@ -15,7 +15,11 @@ class Client_PC(Client):
         super().__init__(ip, port, controller=Controller_PC())
 
 class Controller_PC(Controller):
-    pass
+    def move_car(self, previous_x, previous_y, current_x, current_x):
+        self.dummy_move_car(pervious_x, previous_y, current_x, current_y)
+
+    def clean_exit(self):
+        self.dummy_clean_exit()
 
 if __name__ == '__main__':
     ip = '192.168.1.106'

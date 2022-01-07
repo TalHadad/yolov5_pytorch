@@ -14,7 +14,14 @@ class Server_RASPI(Server):
         super().__init__(ip, port, analyzer=Analyzer_RASPI(target))
 
 class Analyzer_RASPI(Analyzer):
-      pass
+    def get_model(self):
+        return None
+    def get_labeled_image(self, frame):
+        return frame
+    def get_target_coords(self):
+        return 0, 0
+
+
 if __name__ == '__main__':
     #ip = socket.gethostname()
     ip = '192.168.1.106'

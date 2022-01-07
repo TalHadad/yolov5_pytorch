@@ -6,6 +6,8 @@ import cv2
 import time
 import numpy as np
 
+from abc import ABC, abstractmethod
+
 from server_handler import MessageType, HEADERSIZE
 
 class Client():
@@ -66,12 +68,19 @@ class Client():
                 full_msg = b''
 
 
-class Controller():
-
+class Controller(ABC):
+    @abstractmethod
     def clean_exit(self):
+        pass
+
+    def dummy_clean_exit(self):
         print("clean exit.")
 
+    @abstractmethod
     def move_car(self, previous_x, previous_y, current_x, current_y):
+        pass
+
+    def dummy_move_car(self, previous_x, previous_y, current_x, current_y):
         # first measurment
         if previous_x==0 and previous_y==0:
             print("first measurment: doing nothing")
