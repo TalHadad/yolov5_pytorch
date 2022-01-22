@@ -95,6 +95,39 @@ def test_forward():
         GPIO.cleanup()
 
 
+def frequency_dutycycle_grid_search():
+    pin = 12 # 12 = forward pin = purple pin
+    seconds = 5
+
+    GPIO.setup(pin, GPIO.OUT)
+    pwm = GPIO.PWM(pin, 100)
+    pwm.start(100)
+    print(f'pin {pin} is now on freq {freq} and duty cycle {dudy_cycle} and for the next {seconds} seconds')
+    time.sleep(seconds)
+    freq_duty_cycle_map = [
+        (100, 100),
+        (100, 50),
+        (100, 18.18),
+        (100, 19),
+        (1000000, 19),
+        (1000000, 7),
+        (1000000, 0.01),
+        (1000000, 100),
+        (2000,19),
+        (2000,10),
+        (20000,10),
+        (20000,2),
+    ]
+    for freq, duty_cycle in freq_duty_cycle_map:
+        print(f'pin {pin} is now on freq {freq} and duty cycle {dudy_cycle} and for the next {seconds} seconds')
+        pwm.ChangeFrequency(freq)
+        pwm.ChangeDutyCycle(duty_cycle)
+        time.sleep(seconds)
+
+    print('exiting.')
+    pwms[pwm_num].stop()
+    GPIO.cleanup()
 if __name__ == '__main__':
     #main()
-    test_forward()
+    #test_forward()
+    frequency_dutycycle_grid_search()
