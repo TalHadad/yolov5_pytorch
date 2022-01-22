@@ -6,6 +6,8 @@ Each episode is trying to put the cat in the middle of the image.
 """
 
 # Core Library
+from enum import Enum
+import random
 import logging.config
 import math
 import random
@@ -15,6 +17,18 @@ from typing import Any, Dict, List, Tuple
 import gym
 import numpy as np
 from gym import spaces
+
+
+class ActionType(Enum):
+    stay = 'stay'
+
+    forward = 'forward'
+    forward_left = 'forward left'
+    forward_right = 'forward right'
+
+    backward = 'backward'
+    backward_left = 'backward left'
+    backward_right = 'backward right'
 
 class MouseEnv(gym.Env):
     """
@@ -32,14 +46,29 @@ class MouseEnv(gym.Env):
         self.action_space = spaces.Discrete(4)
 
         # Observation is the cat location
-        x_cord = 0
-        y_cord = 0
-        #Box(low=np.array([-1.0, -2.0]), high=np.array([2.0, 4.0]), dtype=np.float32)
-        #Box(2,)
+        coordinate_low = np.array([-np.inf, -np.inf])
+        coordinate_high = np.array([np.inf, np.inf])
+        self.observation_space = spaces.Box(coordinate_low, coordinate_high, dtype=np.float32)
 
-        self.observation_space = spaces.Box(x_cord, y_cord, dtype=np.float32)
+        # Store what the agent tried
+        self.curr_episode = -1
+        self.done = False
 
-    def step(self, action: int) -> Tuple[List[int], float, bool, Dict[Any, Any]]:
+        # The observation is the cat location.
+        # Cat location is in range of x=0-5 and y=0-5.
+        # If cat isn't found, it's location is (0,0).
+        self.location: List[int] = [random.randrange(11), random.randrange(11)] # the cat is somewere in the image.
+
+        # switcher
+        self.action_switcher = {ActionType.stay: (lambda l: l),
+                    ActionType.forward: (lambda l: (l[0], l[1]+1)),
+                    ActionType.forward_left: (lambda l: (l[0]-1, l[1]+1)),
+                    ActionType.forward_right: (lambda l: (l[0]+1, l[1]+1)),
+                    ActionType.backward: (lambda l: (l[0], l[1]-1)),
+                    ActionType.backward_left: (lambda l: (l[0]-1, l[1]-1)),
+                    ActionType.backward_right: (lambda l: (l[0]+1, l[1]-1))}
+
+    def step(self, action: ActionType) -> Tuple[List[int], float, bool, Dict[Any, Any]]:
         """
         The agent takes a step in the environment.
         Parameters
@@ -67,35 +96,27 @@ class MouseEnv(gym.Env):
                  However, official evaluations of your agent are not allowed to
                  use this for learning.
         """
-        if self.is_banana_sold:
+        if (self._location_out_of_range()):
+            # Cat is out of the frame. Episode is done.
             raise RuntimeError("Episode is done")
+
         self.curr_step += 1
         self._take_action(action)
         reward = self._get_reward()
         ob = self._get_state()
-        return ob, reward, self.is_banana_sold, {}
+        return ob, reward, self.done, {}
 
-    def _take_action(self, action: int) -> None:
-        self.action_episode_memory[self.curr_episode].append(action)
-        self.price = (float(self.MAX_PRICE) / (self.action_space.n - 1)) * action
+    def _location_out_of_range(self) -> bool:
+        # 0<=location<=10 is in the frame, otherwise out.
+        return (self.location[0]<0 or self.location[1]<0 or self.location[0]>10 or self.location[1]>10)
 
-        chance_to_take = get_chance(self.price)
-        banana_is_sold = random.random() < chance_to_take
-
-        if banana_is_sold:
-            self.is_banana_sold = True
-
-        remaining_steps = self.TOTAL_TIME_STEPS - self.curr_step
-        time_is_over = remaining_steps <= 0
-        throw_away = time_is_over and not self.is_banana_sold
-        if throw_away:
-            self.is_banana_sold = True  # abuse this a bit
-            self.price = 0.0
+    def _take_action(self, action: ActionType) -> None:
+        self.location = self.action_switcher[action](self.location)
 
     def _get_reward(self) -> float:
-        """Reward is given for a sold banana."""
-        if self.is_banana_sold:
-            return self.price - 1
+        """Reward is given if location is in the middle (5,5)."""
+        if self.location==(5,5):
+            return 1.0
         else:
             return 0.0
 
@@ -107,19 +128,17 @@ class MouseEnv(gym.Env):
         observation: List[int]
             The initial observation of the space.
         """
-        self.curr_step = -1
+        self.done = False
+        self.location: List[int] = [random.randrange(11), random.randrange(11)]
         self.curr_episode += 1
-        self.action_episode_memory.append([])
-        self.is_banana_sold = False
-        self.price = 1.00
         return self._get_state()
 
     def _render(self, mode: str = "human", close: bool = False) -> None:
-        return None
+        print(f'current location: {self.location}')
 
     def _get_state(self) -> List[int]:
         """Get the observation."""
-        ob = [self.TOTAL_TIME_STEPS - self.curr_step]
+        ob = self.location
         return ob
 
     def seed(self, seed: int) -> None:
