@@ -1,4 +1,7 @@
+import datetime
 import gym
+import gym_mouse_lib
+import gym_mouse_lib.gym_mouse
 import numpy as np
 from deep_deterministic_policy_gradient import Agent
 
@@ -15,20 +18,24 @@ def plot_learning_curve(x, scores, figure_file):
     plt.savefig(figure_file)
 
 def main():
-    env = gym.make('LunarLanderContinuous-v2')
+    #env = gym.make('LunarLanderContinuous-v2')
+    env = gym.make('Mouse-v0')
     env.reset()
     # def __init__(self, alpha, beta, input_dims, tau, env, gamma=0.99, n_actions=3, max_size=1000000, layer1_size=400, layer2_size=300, batch_size=64):
+    #print(env.action_space.shape)
     agent = Agent(alpha=0.0001, beta=0.001,
                     input_dims=env.observation_space.shape, tau=0.001, env=env,
                     batch_size=64, layer1_size=400, layer2_size=300,
-                    n_actions=env.action_space.shape[0])
-    n_games = 10
-    filename = 'LunarLander_alpha_' + str(agent.alpha) + '_beta_' + \
-                str(agent.beta) + '_' + str(n_games) + '_games'
+                    n_actions=7)#env.action_space.shape[0])
+
+    n_games = 10000
+    filename = 'Mouse_alpha_' + str(agent.alpha) + '_beta_' + \
+                str(agent.beta) + '_' + str(n_games) + '_games time_' +str(datetime.datetime.now())
     figure_file = 'plots/' + filename + '.png'
 
     best_score = env.reward_range[0]
     score_history = []
+    agent.load_models()
     for i in range(n_games):
         observation = env.reset()
         done = False

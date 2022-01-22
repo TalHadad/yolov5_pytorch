@@ -15,16 +15,26 @@ TARGET = 'person'
 class MessageType(Enum):
     WELCOME = "welcome to the server"
     CLOSE = "closing connection"
+    FOR
 
 class Server():
     def __init__(self, ip, port: int, analyzer):
         print(f'binding server to {ip}:{port}')
-        self.bind_socket(ip, port)
+        self._bind_socket(ip, port)
         self.analyzer = analyzer
 
-    def bind_socket(self, ip, port: int):
+    def _bind_socket(self, ip: str, port: int):
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.socket.bind((ip, port))
+
+    def _pack_message(self, msg: str) -> bytes:
+        msg = pickle.dumps(msg)
+        msg = bytes(f'{len(msg):<{HEADERSIZE}}', "utf-8") + msg
+        return msg
+
+    def _unpack_message(self, msg: bytes) -> str:
+        msg = pickle.loads(msg[HEADERSIZE:])
+        return msg
 
     def start(self):
         self.socket.listen(5) # arg = number of clients
@@ -33,10 +43,8 @@ class Server():
             client_socket, address = self.socket.accept()
             print(f'Connection from {address} has been established!')
 
-            msg = pickle.dumps(MessageType.WELCOME)
-            print(f'sending.')
-
-            msg = bytes(f'{len(msg):<{HEADERSIZE}}', "utf-8") + msg
+            msg = self._pack_message(MessageType.WELCOME)
+            print(f'sending welcome message.')
             client_socket.send(msg)
 
             new_msg = True
@@ -55,11 +63,11 @@ class Server():
                     #print(f"full msg recvd, size {len(full_msg[HEADERSIZE:])}")
                     #print(full_msg[HEADERSIZE:])
 
-                    message = pickle.loads(full_msg[HEADERSIZE:])
-                    ret = self.analyzer.process_image(message)
-                    msg = pickle.dumps(ret)
-                    msg = bytes(f'{len(msg):<{HEADERSIZE}}', "utf-8") + msg
-                    client_socket.send(msg)
+                    image = self._unpack_message(full_msg)
+                    cat_coordinates = self.analyzer.process_image(image)
+                    action = self.agent.get w
+                    send_msg = self._pack_message(response)
+                    client_socket.send(send_msg)
 
                     new_msg = True
                     full_msg = b''
@@ -79,7 +87,7 @@ class Analyzer(ABC):
     def get_model(self):
         pass
 
-    def process_image(self, frame):
+    def process_image(self, frame) -> tuple:
         coords_diff = (0, 0, 0, 0)
         start = time.time()
 
