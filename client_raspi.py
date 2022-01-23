@@ -28,7 +28,7 @@ class Controller_RPI(Controller):
 
         self.wait_seconds = 2
         self.pwm_frequency = 100
-        self.pwm_duty_cycle = 19
+        self.pwm_duty_cycle = 100
 
         self.pwms = {}
 

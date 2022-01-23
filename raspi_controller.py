@@ -95,7 +95,13 @@ def test_forward():
         GPIO.cleanup()
 
 def set_freq_and_duty_cycle():
-    pin = 12 # 12 = forward pin = purple pin
+    backward_pin = 11 # white_pin
+    forward_pin = 12 # purple_pin
+    right_pin = 13 # green_pin
+    left_pin = 15 # blue_pin
+
+
+    pin = right_pin
     seconds = 5
     freq = 100
     duty_cycle = 100
