@@ -16,7 +16,7 @@ class Controller(ABC):
         cap = cv2.VideoCapture(0)
         ret, frame = cap.read()
         if not ret:
-            print('Could not read frame.')
+            logging.error('Could not read frame.')
         cap.release()
         return frame
 
@@ -36,7 +36,7 @@ class Controller_RPi(Controller):
         self.pwms =  self._pwm_setup(self.pins)
 
     def _pwm_setup(self, pins: dict) -> list:
-        print('setting GPIOs.')
+        logging.info('setting GPIOs.')
         pwms = []
         for pin in pins:
             GPIO.setup(pins[pin], GPIO.OUT)
@@ -67,10 +67,10 @@ class Controller_RPi(Controller):
         time.sleep(self.wait_seconds)
 
     def exit_clean(self) -> None:
+        logging.info(f'exiting clean.')
         for pwm in self.pwms:
             pwm.stop()
         GPIO.cleanup()
-        print("clean exit.")
 
     def do_action(self, action: int) -> None:
         '''
@@ -85,19 +85,19 @@ class Controller_RPi(Controller):
         '''
         # stop (do nothing)
         if action == 0:
-            print("target isn't moving: doing nothing.")
+            logging.debug("target isn't moving: doing nothing.")
             pass
 
         # forward
         elif action == 1:
-            print("target moved backward: moving forward.")
+            logging.debug("target moved backward: moving forward.")
             self._move_forward()
             self._wait()
             self._stop_forward()
 
         # forward_left
         elif action == 2:
-            print('target moved left and backward: moving left and forward.')
+            logging.debug('target moved left and backward: moving left and forward.')
             self._move_left()
             self._move_forward()
             self._wait()
@@ -106,7 +106,7 @@ class Controller_RPi(Controller):
 
         # forward_right
         elif action == 3:
-            print('target moved right and backward: moving right and forward.')
+            logging.debug('target moved right and backward: moving right and forward.')
             self._move_right()
             self._move_forward()
             self._wait()
@@ -115,14 +115,14 @@ class Controller_RPi(Controller):
 
         # backward
         elif action == 4:
-            print('target moved forward: moving backward.')
+            logging.debug('target moved forward: moving backward.')
             self._move_backward()
             self._wait()
             self._stop_backward()
 
         # backward_left
         elif action == 5:
-            print('target moved right and forward: moving left and backward.')
+            logging.debug('target moved right and forward: moving left and backward.')
             self._move_left()
             self._move_backward()
             self._wait()
@@ -131,7 +131,7 @@ class Controller_RPi(Controller):
 
         # backward_right
         elif action == 6:
-            print('target moved left and forward: moving right and backward.')
+            logging.debug('target moved left and forward: moving right and backward.')
             self._move_right()
             self._move_backward()
             self._wait()

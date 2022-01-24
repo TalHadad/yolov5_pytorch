@@ -30,7 +30,7 @@ class Client():
                 action = int(self._receive())
                 self.controller.do_action(action)
         except:
-            logging.warning(f'client stopped, exiting clean')
+            logging.warning(f'client stopped, exiting clean.')
             self.exit_clean()
 
     def _send(self, image) -> None:
