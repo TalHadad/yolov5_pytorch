@@ -1,4 +1,4 @@
-# server_handler.py
+# server.py
 from abc import ABC, abstractmethod
 
 from enum import Enum
@@ -7,128 +7,74 @@ import socket
 import time
 import pickle
 import numpy as np
+from detector import Detector, Detector_Yolov5
+from agent import Agent, Agent_DDPG
 
 HEADERSIZE = 10
+def receive(socket) -> str:
+    got_full_msg = False
+    is_new_msg = True
+    full_msg = b''
+    while not got_full_msg:
+        part_msg = socket.recv(16)
+        if is_new_msg:
+            len_msg = int(part_msg[:HEADERSIZE])
+            is_new_msg = False
+            logging.debug(f"got new message length: {len_msg}")
 
-TARGET = 'person'
+        full_msg += part_msg
 
-class MessageType(Enum):
-    WELCOME = "welcome to the server"
-    CLOSE = "closing connection"
-    FOR
+        if len(full_msg)-HEADERSIZE == len_msg:
+            msg = full_msg[HEADERSIZE:]
+            got_full_msg = True
+
+    msg = pickle.loads(msg)
+    logging.debug(f'full msg received: {msg}')
+    return msg
+
+def send(socket, msg) -> None:
+    msg = pickle.dumps(msg)
+    msg = bytes(f'{len(msg):<{HEADERSIZE}}', "utf-8") + msg
+    socket.send(msg)
 
 class Server():
-    def __init__(self, ip, port: int, analyzer):
-        print(f'binding server to {ip}:{port}')
-        self._bind_socket(ip, port)
-        self.analyzer = analyzer
+    def __init__(self, ip, port: int, detector: Detector, agent: Agent):
+        self.socket = self._bind_socket(ip, port)
+        self.detector = detector
+        self.agent = agent
 
     def _bind_socket(self, ip: str, port: int):
-        self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.socket.bind((ip, port))
+        socket = None
+        try:
+            socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            socket.bind((ip, port))
+            socket.listen(5) # param = number of clients
+            logging.info(f'server is binded to {ip}:{port}.')
+        except socket.error as err:
+            logging.error(f'socket {ip}:{port} creation failed with error {err}')
+        return socket
 
-    def _pack_message(self, msg: str) -> bytes:
-        msg = pickle.dumps(msg)
-        msg = bytes(f'{len(msg):<{HEADERSIZE}}', "utf-8") + msg
-        return msg
-
-    def _unpack_message(self, msg: bytes) -> str:
-        msg = pickle.loads(msg[HEADERSIZE:])
-        return msg
-
-    def start(self):
-        self.socket.listen(5) # arg = number of clients
-
-        while True:
-            client_socket, address = self.socket.accept()
-            print(f'Connection from {address} has been established!')
-
-            msg = self._pack_message(MessageType.WELCOME)
-            print(f'sending welcome message.')
-            client_socket.send(msg)
-
-            new_msg = True
-            full_msg = b''
+    def start(self) -> None:
+        logging.info('starting server.')
+        self._wait_for_client()
+        try:
             while True:
-                msg = client_socket.recv(16)
-                if new_msg:
-                    print(f"new message length: {msg[:HEADERSIZE]}")
-                    msglen = int(msg[:HEADERSIZE])
-                    new_msg = False
+                image = receive(self.socket)
+                location = self.detector.get_location(image)
+                action = self.agent.get_action(location)
+                send(self.client_socket, action)
+        except:
+            logging.warning(f'server stopped, exiting clean')
+            self.detector.exit_clean()
+            self.agent.exit_clean()
 
-                #full_msg += msg.decode("utf-8")
-                full_msg += msg
-
-                if len(full_msg)-HEADERSIZE == msglen:
-                    #print(f"full msg recvd, size {len(full_msg[HEADERSIZE:])}")
-                    #print(full_msg[HEADERSIZE:])
-
-                    image = self._unpack_message(full_msg)
-                    cat_coordinates = self.analyzer.process_image(image)
-                    action = self.agent.get w
-                    send_msg = self._pack_message(response)
-                    client_socket.send(send_msg)
-
-                    new_msg = True
-                    full_msg = b''
-
-class Analyzer(ABC):
-    def __init__(self):
-        self.target = TARGET
-        print(f'target is : {self.target}')
-
-        self.model = self.get_model()
-        print(f'build model')
-
-        self.x = 0
-        self.y = 0
-
-    @abstractmethod
-    def get_model(self):
-        pass
-
-    def process_image(self, frame) -> tuple:
-        coords_diff = (0, 0, 0, 0)
-        start = time.time()
-
-        labeled_img = self.get_labeled_image(frame)
-        cv2.imshow('result', np.asarray(labeled_img, dtype=np.uint8))
-        #if cv2.waitKey(1) == ord('q'):
-        #    cv2.destroyAllWindows()
-        cv2.waitKey(1)
-
-        current_x, current_y = self.get_target_coords()
-        if current_x!=0 or current_y!=0:
-            print(f'found {self.target} in x={current_x} and y={current_y}')
-            coords_diff = self.x, self.y, current_x, current_y
-            self.x = current_x
-            self.y = current_y
-
-        self.print_time(start)
-
-        return coords_diff
-
-    @abstractmethod
-    def get_labeled_image(self, frame):
-        pass
-    @abstractmethod
-    def get_target_coords(self):
-        pass
-
-    def print_time(self, start):
-
-        stop = time.time()
-        seconds = stop - start
-        print(f'Time taken : {seconds} seconds')
-        # Calcutate frames per seconds
-        fps = 1 / seconds
-        print(f'Estimated frames per second : {fps}')
-
+    def _wait_for_client():
+        self.client_socket, address = self.socket.accept()
+        logging.info(f'Connection from {address} has been established!')
 
 if __name__ == '__main__':
     #ip = socket.gethostname()
     ip = '192.168.1.106'
     port = 8003
-    target = 'person'
-    server = Server(ip, port, target)
+    server = Server(ip, port, Detector_Yolov5(), Agent_DDPG())
     server.start()

@@ -7,13 +7,60 @@ import pickle
 import torch
 import numpy as np
 
-from server_handler import Server, Analyzer
 
-class Server_PC(Server):
-    def __init__(self, ip, port: int, target):
-        super().__init__(ip, port, analyzer=Analyzer_PC())
+class Detector(ABC):
+    def __init__(self):
+        self.target = TARGET
+        print(f'target is : {self.target}')
 
-class Analyzer_PC(Analyzer):
+        self.model = self.get_model()
+        print(f'build model')
+
+        self.x = 0
+        self.y = 0
+
+    @abstractmethod
+    def get_model(self):
+        pass
+
+    def process_image(self, frame) -> tuple:
+        coords_diff = (0, 0, 0, 0)
+        start = time.time()
+
+        labeled_img = self.get_labeled_image(frame)
+        cv2.imshow('result', np.asarray(labeled_img, dtype=np.uint8))
+        #if cv2.waitKey(1) == ord('q'):
+        #    cv2.destroyAllWindows()
+        cv2.waitKey(1)
+
+        current_x, current_y = self.get_target_coords()
+        if current_x!=0 or current_y!=0:
+            print(f'found {self.target} in x={current_x} and y={current_y}')
+            coords_diff = self.x, self.y, current_x, current_y
+            self.x = current_x
+            self.y = current_y
+
+        self.print_time(start)
+
+        return coords_diff
+
+    @abstractmethod
+    def get_labeled_image(self, frame):
+        pass
+    @abstractmethod
+    def get_target_coords(self):
+        pass
+
+    def print_time(self, start):
+
+        stop = time.time()
+        seconds = stop - start
+        print(f'Time taken : {seconds} seconds')
+        # Calcutate frames per seconds
+        fps = 1 / seconds
+        print(f'Estimated frames per second : {fps}')
+
+class Detector_Yolov5(Detector):
     def get_model(self):
         model = torch.hub.load('ultralytics/yolov5', 'yolov5s', pretrained=True)
         device = 'cuda' if torch.cuda.is_available() else 'cpu'

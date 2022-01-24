@@ -1,13 +1,13 @@
-# client_handler.py
+# client.py
 import socket
 import pickle
 import logging # debug, info, warning, error, critical
-from server import HEADERSIZE
-from controller import Controller_RPi
+from server import send, receive
+from controller import Controller, Controller_RPi
 
 class Client():
 
-    def __init__(self, ip, port: int, controller):
+    def __init__(self, ip, port: int, controller: Controller):
         self.server_socket = self._connect_socket(ip, port)
         self.controller = controller
 
@@ -31,36 +31,9 @@ class Client():
                 self.controller.do_action(action)
         except:
             logging.warning(f'client stopped, exiting clean.')
-            self.exit_clean()
+            self.controller.exit_clean()
 
-    def _send(self, image) -> None:
-        msg = pickle.dumps(image)
-        msg = bytes(f'{len(msg):<{HEADERSIZE}}', "utf-8") + msg
-        self.server_socket.send(msg)
 
-    def _receive() -> str:
-        got_full_msg = False
-        is_new_msg = True
-        full_msg = b''
-        while not got_full_msg:
-            part_msg = self.server_socket.recv(16)
-            if is_new_msg:
-                len_msg = int(part_msg[:HEADERSIZE])
-                is_new_msg = False
-                logging.debug(f"got new message length: {len_msg}")
-
-            full_msg += part_msg
-
-            if len(full_msg)-HEADERSIZE == len_msg:
-                msg = full_msg[HEADERSIZE:]
-                got_full_msg = True
-                logging.debug(f'full msg received: {}')
-
-        msg = pickle.loads(msg)
-        return msg
-
-    def exit_clean() -> None:
-        self.controller.exit_clean()
 
 if __name__ == '__main__':
     ip = '192.168.1.106'
