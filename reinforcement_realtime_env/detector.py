@@ -53,28 +53,32 @@ class Detector_Yolov5(Detector):
             #    cv2.destroyAllWindows()
             cv2.waitKey(1)
 
-        x, y = self._get_target_coords(results)
+        x, y = self._get_target_cords(results)
 
         if x!=0 or y!=0:
-            logging.debug(f'found {self.target} in x={x} and y={y}')
         else:
-            logging.debug(f'did not found {self.target} (x={x} and y={y})')
 
         self._print_time(start)
 
         return x,y
 
-    def _get_target_coords(self, results):
+    def _get_target_cords(self, results):
         cords = results.xyxy[0].numpy()
 
         # select target records
         target_cords = cords[cords[:,5]==self.target_num]
         if len(target_cords) == 0:
+            logging.debug(f'did not found {self.target}')
             return 0,0
         # select above confidence threshold
         target_cords = target_cords[target_cords[:, 4]>self.confidence_threshold]
         # take x, y of the first match/row
-        return target_cords[0][0], target_cords[0][1]
+        x1, y1, x2, y2 = target_cords[0][0], target_cords[0][1], target_cords[0][2], target_cords[0][3]
+        x_mid = ((x2-x1)/2) + x1
+        y_mid = ((y2-y1)/2) + y1
+        logging.debug(f'found {self.target} in x={x_mid} and y={y_mid}')
+        return x_mid, y_mid
+
 
     def _get_labeled_image(self, results, image):
         labels, cord = self._score_image(results)
