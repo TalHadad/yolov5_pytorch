@@ -1,6 +1,7 @@
 # controller.py
 import time
 from abc import ABC, abstractmethod
+import logging
 import cv2
 import RPi.GPIO as GPIO
 GPIO.setmode(GPIO.BOARD)
@@ -65,7 +66,7 @@ class Controller_RPi(Controller):
     def _wait(self) -> None:
         time.sleep(self.wait_seconds)
 
-    def _clean_pwm_close(self) -> None:
+    def exit_clean(self) -> None:
         for pwm in self.pwms:
             pwm.stop()
         GPIO.cleanup()
