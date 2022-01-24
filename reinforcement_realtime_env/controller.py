@@ -43,35 +43,6 @@ class Controller_RPi(Controller):
             pwms.append(GPIO.PWM(pins[pin], self.pwm_frequency))
         return pwms
 
-    def _move_forward(self) -> None:
-        self.pwms[self.pins['forward']].start(self.pwm_duty_cycle)
-    def _stop_forward(self) -> None:
-        self.pwms[self.pins['forward']].stop()
-
-    def _move_left(self) -> None:
-        self.pwms[self.pins['left']].start(self.pwm_duty_cycle)
-    def _stop_left(self) -> None:
-        self.pwms[self.pins['left']].stop()
-
-    def _move_right(self) -> None:
-        self.pwms[self.pins['right']].start(self.pwm_duty_cycle)
-    def _stop_right(self) -> None:
-        self.pwms[self.pins['right']].stop()
-
-    def _move_backward(self) -> None:
-        self.pwms[self.pins['backward']].start(self.pwm_duty_cycle)
-    def _stop_backward(self) -> None:
-        self.pwms[self.pins['backward']].stop()
-
-    def _wait(self) -> None:
-        time.sleep(self.wait_seconds)
-
-    def exit_clean(self) -> None:
-        logging.info(f'exiting clean.')
-        for pwm in self.pwms:
-            pwm.stop()
-        GPIO.cleanup()
-
     def do_action(self, action: int) -> None:
         '''
         Move the car acording to action number:
@@ -137,3 +108,32 @@ class Controller_RPi(Controller):
             self._wait()
             self._stop_right()
             self._stop_backward()
+
+    def exit_clean(self) -> None:
+        logging.info(f'exiting clean.')
+        for pwm in self.pwms:
+            pwm.stop()
+        GPIO.cleanup()
+
+    def _wait(self) -> None:
+        time.sleep(self.wait_seconds)
+
+    def _move_forward(self) -> None:
+        self.pwms[self.pins['forward']].start(self.pwm_duty_cycle)
+    def _stop_forward(self) -> None:
+        self.pwms[self.pins['forward']].stop()
+
+    def _move_left(self) -> None:
+        self.pwms[self.pins['left']].start(self.pwm_duty_cycle)
+    def _stop_left(self) -> None:
+        self.pwms[self.pins['left']].stop()
+
+    def _move_right(self) -> None:
+        self.pwms[self.pins['right']].start(self.pwm_duty_cycle)
+    def _stop_right(self) -> None:
+        self.pwms[self.pins['right']].stop()
+
+    def _move_backward(self) -> None:
+        self.pwms[self.pins['backward']].start(self.pwm_duty_cycle)
+    def _stop_backward(self) -> None:
+        self.pwms[self.pins['backward']].stop()

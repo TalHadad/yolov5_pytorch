@@ -76,5 +76,6 @@ if __name__ == '__main__':
     #ip = socket.gethostname()
     ip = '192.168.1.106'
     port = 8003
-    server = Server(ip, port, Detector_Yolov5(), Agent_DDPG())
+    target = 'person'
+    server = Server(ip, port, Detector_Yolov5(target), Agent_DDPG())
     server.start()
