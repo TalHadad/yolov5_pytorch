@@ -26,3 +26,6 @@ $ cd ~/Desktop/yolov5_pytorch
 $ source ~/Desktop/test_env/bin/activate
 (cv2 and tensorflow installed in this env)
 $ sudo python client_simple_raspi.py
+
+If you get "ModuleNotFoundError: No module named 'RPi'" error in virual env, install it while env is activate with:
+$ pip3 install RPi.GPIO

@@ -316,7 +316,11 @@ class Agent(object):
             # get the actual action from the actor network
             mu = self.actor(observation).to(self.actor.device)
 
-            mu_prime = mu = T.tensor(self.noise(), dtype=T.float).to(self.actor.device)
+            # NOTE: if not in train mode (but in real time mode) you should comment the bottom line (noise).
+            mu_prime = mu + T.tensor(self.noise(), dtype=T.float).to(self.actor.device)
+            # NOTE cont: and replace it with:
+            # mu_prime = mu
+
             self.actor.train()
 
             # This is an idiom within pytorch, where you have to detach, otherwise it doesn't give you the actual numpy value.
