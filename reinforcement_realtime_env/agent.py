@@ -18,12 +18,23 @@
 # 3. class for our critic
 # 4. class for our actor (as the agent)
 
+from abc import ABC, abstractmethod
+import random
+import logging
+logging.basicConfig(level=logging.INFO)
 import os
 import torch as T
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
 import numpy as np
+import matplotlib.pyplot as plt
+import datetime
+
+class Agent(ABC):
+      @abstractmethod
+      def choose_action(self, state):
+            pass
 
 # 1. start with the noise
 # OU stand for Ornstein Ullembeck
@@ -259,18 +270,20 @@ class ActorNetwork(nn.Module):
             print('... loading checkpoint ...')
             self.load_state_dict(T.load(self.checkpoint_file))
 
-
-class Agent(object):
+class Agent_DDPG(Agent):
       # env to get the action space
       # gamma (agent discount factor) = 0.99 is 1% to value reward now that the future, because there's uncertainty in the future, typically is 0.95 to 0.99
       # n_action is 2, becase many environment has only 2 action
       # layers size came from the paper
 
-      def __init__(self, alpha, beta, input_dims, tau, env, gamma=0.99, n_actions=3, max_size=1000000, layer1_size=400, layer2_size=300, batch_size=64):
+      def __init__(self, alpha:float=0.0001, beta:float=0.001, input_dims:tuple=(2,),
+                   tau:float=0.001, gamma:float=0.99, n_actions:int=7, max_size:int=1000000,
+                   layer1_size:int=400, layer2_size:int=300, batch_size:int=64):
             self.alpha = alpha
             self.beta = beta
             self.input_dims = input_dims
             self.gamma = gamma
+            self.n_actions = n_actions
             self.tau = tau
             self.memory = ReplayBuffer(max_size, input_dims, n_actions)
             self.batch_size = batch_size
@@ -298,7 +311,10 @@ class Agent(object):
             # and this function will do precisely that.
             # Except that we have 4 networks instead of 2.
 
-      def choose_action(self, observation):
+            # me: do main init commands to keep elegant use of agent
+            self._preparation_init()
+
+      def choose_action(self, state):
             # very important: you have to put the actor into evaluation mode.
             # this doesn't perform an evaluation step,
             # this just tells pytorch that you don't want to calculate statistics for the batch normalization.
@@ -311,10 +327,10 @@ class Agent(object):
             self.actor.eval()
 
             # to turn to a cuda float tensor
-            observation = T.tensor(observation, dtype=T.float).to(self.actor.device)
+            state = T.tensor(state, dtype=T.float).to(self.actor.device)
 
             # get the actual action from the actor network
-            mu = self.actor(observation).to(self.actor.device)
+            mu = self.actor(state).to(self.actor.device)
 
             # NOTE: if not in train mode (but in real time mode) you should comment the bottom line (noise).
             mu_prime = mu + T.tensor(self.noise(), dtype=T.float).to(self.actor.device)
@@ -325,7 +341,104 @@ class Agent(object):
 
             # This is an idiom within pytorch, where you have to detach, otherwise it doesn't give you the actual numpy value.
             # Otherwise it will pass out a tensor, which doesn't work, beacuse you can't pass a tensor into the open ai gym.
-            return mu_prime.cpu().detach().numpy()
+            self.last_action_probs  = mu_prime.cpu().detach().numpy()  # action probabilities, type ndarry: (7,)]
+            return self.last_action_probs
+
+      ############################################
+
+      def choose_action_and_prep(self, state, done) -> int:
+            # me: do main commands to keep elegant use of agent
+            if state is not None: # state is None only at the beginning
+                  self._preparation_selection(state, done)
+
+            action = None
+            if not done:
+                  action_probs = self.choose_action(state)
+                  # TODO compair action[0] to (is or ==) np.nan don't work, it is of type float32, fix comparison.
+                  if str(action_probs[0]) == 'nan':
+                        logging.error(f'action is None {action_probs}')
+                        raise RuntimeError('action is nan')
+            else:
+                  #action = mp.zeros(self.n_actions)
+                  #action = random.randrange(self.n_actions)
+                  action_probs = np.random.randint(0, 10, size=self.n_actions)
+            self.last_action_int = int(np.argmax(action_probs)) # this is a numpy of single value that is passed as int
+            #logging.info(f'{self.__class__.__name__} choosen action {action_int}')
+            return self.last_action_int
+
+      def _preparation_init(self):
+            # init for all games
+            self.game_index = 0
+            self.best_score = 0
+            self.score_history = []
+            self._preparation_game_init()
+
+      def _preparation_selection(self, state, done):
+            if self.last_state is None:
+                  self.last_state = state
+            elif self.last_action_probs is None:
+                  logging.warning(f'rememberring None')
+            else:
+                  reward = self._get_reward(state)
+                  # If the game is over (done=True), arg state should be None.
+                  # so the model remember and learn that the last action in last state leads to None state.
+
+                  self.remember(self.last_state, self.last_action_probs, reward, state, done)
+                  self.learn()
+                  self.score += reward
+                  self.last_state = state
+                  if done:
+                        logging.info(f'{self.__class__.__name__}._preparation_selection: game over, state {self.last_state}, score {self.score}, last_action {self.last_action_int}')
+                        self._preparation_game_over()
+                        self._preparation_game_init()
+                        logging.info(f'{self.__class__.__name__}._preparation_selection: restart, state {self.last_state}, score {self.score}, last_action {self.last_action_int}')
+
+      def _preparation_game_over(self):
+            self.game_index += 1
+            self.score_history.append(self.score)
+            self.avg_score = np.mean(self.score_history[-100:])
+            if self.avg_score > self.best_score:
+                  self.best_score = self.avg_score
+                  self.save_models()
+            logging.info(f'{self.__class__.__name__}._preparation_game_over: score {self.score}, average score {self.avg_score}')
+
+      def exit_clean(self):
+            self._plot_learning_curve()
+
+      def _plot_learning_curve(self):
+            running_avg = np.zeros(len(self.score_history))
+            for i in range(len(running_avg)):
+                  running_avg[i] = np.mean(self.score_history[max(0, i-100):(i+1)])
+
+            x = [i+1 for i in range(self.game_index)]
+            plt.plot(x, running_avg)
+            plt.title('Running average of previous 100 scores')
+            filename = f'Mouse_alpha_{self.alpha}_beta_{self.beta}_{self.game_index}_games_time_{datetime.datetime.now()}'
+            figure_file = f'plots/{filename}.png'
+            plt.savefig(figure_file)
+
+      def _preparation_game_init(self):
+            # init for each game/done=True
+            self.last_state = None
+            self.last_action_probs = None
+            self.last_action_int = None
+            self.done = False
+            self.score = 0
+            self.noise.reset()
+
+      def _get_reward(self, state):
+            # the grid is 10x10, and location ~(5,5) which is the middle is where we want to be.
+            # so state which is location of 4-6 in both axes (x and y, state[0] and state[1]).
+            reward = 0.0
+            if state is not None and 4<=state[0] and state[0]<=6 and 4<=state[1] and state[1]<=6:
+                  reward += 0.3
+            if state is not None and 4.5<=state[0] and state[0]<=6.5 and 4.5<=state[1] and state[1]<=6.5:
+                  reward += 0.3
+            if state is not None and state[0]==5 and state[1]==5:
+                  reward += 0.3
+            return reward
+
+      ############################################
 
       def remember(self, state, action, reward, new_state, done):
             # to store state transitions (kind of interface for replay memory class)

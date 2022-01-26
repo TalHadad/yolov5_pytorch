@@ -61,7 +61,7 @@ class Server():
             while True:
                 image = receive(self.socket)
                 location = self.detector.get_location(image)
-                action = self.agent.get_action(location)
+                action = self.agent.choose_action(location)
                 send(self.client_socket, action)
         except:
             logging.warning(f'server stopped, exiting clean')

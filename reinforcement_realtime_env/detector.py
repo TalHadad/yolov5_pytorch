@@ -74,8 +74,8 @@ class Detector_Yolov5(Detector):
         target_cords = target_cords[target_cords[:, 4]>self.confidence_threshold]
         # take x, y of the first match/row
         x1, y1, x2, y2 = target_cords[0][0], target_cords[0][1], target_cords[0][2], target_cords[0][3]
-        x_mid = ((x2-x1)/2) + x1
-        y_mid = ((y2-y1)/2) + y1
+        x_mid = (abs(x2-x1)/2) + x1
+        y_mid = (abs(y2-y1)/2) + y1
         logging.debug(f'found {self.target} in x={x_mid} and y={y_mid}')
         return x_mid, y_mid
 

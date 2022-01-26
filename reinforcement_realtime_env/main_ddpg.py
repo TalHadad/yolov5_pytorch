@@ -1,9 +1,11 @@
 import datetime
+import logging
+logging.basicConfig(level=logging.INFO)
 import gym
 import gym_mouse_lib
 import gym_mouse_lib.gym_mouse
 import numpy as np
-from deep_deterministic_policy_gradient import Agent
+from agent import Agent_DDPG
 
 #from utils import plot_learning_curve
 import numpy as np
@@ -17,38 +19,57 @@ def plot_learning_curve(x, scores, figure_file):
     plt.title('Running average of previous 100 scores')
     plt.savefig(figure_file)
 
+
+def realtime():
+    env = gym.make('Mouse-v0')
+    env.reset()
+    agent = Agent_DDPG()
+    # no for n_games (rl)
+    try:
+        location = None
+        done = True
+        while True:
+            # no receive image (server)
+            action = agent.choose_action_and_prep(location, done)
+            # TODO unmark line below to render env in every turn
+            #env.render()
+            location, reward, done, info = env.step(action)
+            # no send action (server)
+    except Exception as e:
+        logging.warning(f'main ddpg stopped, exit clean.\ne = {e}\naction {action} location {location} reward {reward} done {done}')
+        agent.exit_clean()
+        env.close()
+
+def _get_location():
+    return (0,0)
+
 def main():
     #env = gym.make('LunarLanderContinuous-v2')
     env = gym.make('Mouse-v0')
-    env.reset()
-    # def __init__(self, alpha, beta, input_dims, tau, env, gamma=0.99, n_actions=3, max_size=1000000, layer1_size=400, layer2_size=300, batch_size=64):
-    #print(env.action_space.shape)
-    agent = Agent(alpha=0.0001, beta=0.001,
-                    input_dims=env.observation_space.shape, tau=0.001, env=env,
-                    batch_size=64, layer1_size=400, layer2_size=300,
-                    n_actions=7)#env.action_space.shape[0])
+    agent = Agent_DDPG()
 
     n_games = 10000
     filename = 'Mouse_alpha_' + str(agent.alpha) + '_beta_' + \
                 str(agent.beta) + '_' + str(n_games) + '_games time_' +str(datetime.datetime.now())
     figure_file = 'plots/' + filename + '.png'
 
-    best_score = env.reward_range[0]
+    best_score = 0 #env.reward_range[0]
     score_history = []
-    agent.load_models()
+    #agent.load_models()
     for i in range(n_games):
-        observation = env.reset()
+        state = env.reset()
         done = False
         score = 0
         agent.noise.reset()
+
         while not done:
-            action = agent.choose_action(observation)
+            action = agent.choose_action(state)
             env.render()
-            observation_, reward, done, info = env.step(action)
-            agent.remember(observation, action, reward, observation_, done)
+            new_state, reward, done, info = env.step(action)
+            agent.remember(state, action, reward, new_state, done)
             agent.learn()
             score += reward
-            observation = observation_
+            state = new_state
         score_history.append(score)
         avg_score = np.mean(score_history[-100:])
 
@@ -56,8 +77,7 @@ def main():
             best_score = avg_score
             agent.save_models()
 
-        print('episode ', i, 'score %.1f' % score,
-                'average score %.1f' % avg_score)
+        print(f'episode {i}, score {score}, average score {avg_score}')
     x = [i+1 for i in range(n_games)]
     env.close()
     plot_learning_curve(x, score_history, figure_file)
@@ -72,4 +92,5 @@ def openai_gym_demo_random_agent():
     env.close()
 
 if __name__ == '__main__':
-    main()
+    #main()
+    realtime()

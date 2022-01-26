@@ -8,7 +8,8 @@ Each episode is trying to put the cat in the middle of the image.
 # Core Library
 from enum import Enum
 import random
-import logging.config
+import logging
+logging.basicConfig(level=logging.INFO)
 import math
 import random
 from typing import Any, Dict, List, Tuple
@@ -70,7 +71,7 @@ class MouseEnv(gym.Env):
         #            ActionType.backward_left: (lambda l: (l[0]-1, l[1]-1)),
         #            ActionType.backward_right: (lambda l: (l[0]+1, l[1]-1))}
         self.action_switcher = {0: (lambda l: l),
-                                1: (lambda l: [l[0], l[1]+1]),
+                                1: (lambda l: [l[0], l[1] + 1]),
                                 2: (lambda l: [l[0]-1, l[1]+1]),
                                 3: (lambda l: [l[0]+1, l[1]+1]),
                                 4: (lambda l: [l[0], l[1]-1]),
@@ -107,22 +108,29 @@ class MouseEnv(gym.Env):
         """
         if (self._location_out_of_range()):
             # Cat is out of the frame. Episode is done.
-            raise RuntimeError("Episode is done")
+            # raise RuntimeError("Episode is done")
+            # restart a game
+            logging.info(f'{self.__class__.__name__} game over, location {self.location}, done {self.done}')
+            self.reset()
+            logging.info(f'{self.__class__.__name__} restart, location {self.location}, done {self.done}')
 
         self._take_action(action)
         reward = self._get_reward()
-        ob = self._get_state()
-        return ob, reward, self.done, {}
+        state = self._get_state()
+        return state, reward, self.done, {}
 
     def _location_out_of_range(self) -> bool:
         # 0<=location<=10 is in the frame, otherwise out.
-        return (self.location[0]<0 or self.location[1]<0 or self.location[0]>10 or self.location[1]>10)
+        return (self.location is None) or (self.location[0]<0 or self.location[1]<0 or self.location[0]>10 or self.location[1]>10)
 
     def _take_action(self, action: int) -> None:
         # print(f'action = {type(action)} {action}') # action = <class 'numpy.ndarray'> [-0.00392292  0.03153225  0.00023934  0.02393808 -0.0070587   0.0526591 0.04278992]
-        self.location = self.action_switcher[np.argmax(action)](self.location)
+        self.location = self.action_switcher[action](self.location)
         if self._location_out_of_range():
             self.done = True
+            # TODO not make location None as end state, cause non vector to return as action
+            #self.location = None
+
 
     def _get_reward(self) -> float:
         """Reward is given if location is in the middle (5,5)."""
@@ -149,8 +157,8 @@ class MouseEnv(gym.Env):
 
     def _get_state(self) -> List[int]:
         """Get the observation."""
-        ob = self.location
-        return ob
+        state = self.location
+        return state
 
     def seed(self, seed: int) -> None:
         random.seed(seed)
