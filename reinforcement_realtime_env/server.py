@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 
 from enum import Enum
 import logging
-
+import socket as s
 logging.basicConfig(level=logging.INFO)
 from detector import Detector, Detector_Yolov5
 from agent import Agent, Agent_DDPG
@@ -19,11 +19,11 @@ class Server():
     def _bind_socket(self, ip: str, port: int):
         socket = None
         try:
-            socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            socket = s.socket(s.AF_INET, s.SOCK_STREAM)
             socket.bind((ip, port))
             socket.listen(5)  # param = number of clients
             logging.info(f'server is binded to {ip}:{port}.')
-        except socket.error as err:
+        except s.error as err:
             logging.error(f'socket {ip}:{port} creation failed with error {err}')
         return socket
 
