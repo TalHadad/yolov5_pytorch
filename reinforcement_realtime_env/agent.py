@@ -39,7 +39,7 @@ class Agent(ABC):
         pass
 
     @abstractmethod
-    def choose_action_and_prep(self, state):
+    def choose_action_and_prep_with_env(self, state):
         pass
 
 
