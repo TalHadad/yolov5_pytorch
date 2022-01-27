@@ -28,8 +28,8 @@ class Client():
                 send(self.server_socket, image)
                 action = int(receive(self.server_socket))
                 self.controller.do_action(action)
-        except:
-            logging.warning(f'client stopped, exiting clean.')
+        except Exception as e:
+            logging.warning(f'client stopped, exiting clean, exception {e}')
             self.controller.exit_clean()
 
 
