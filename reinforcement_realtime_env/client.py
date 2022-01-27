@@ -1,9 +1,8 @@
 # client.py
 import socket
-import pickle
 import logging # debug, info, warning, error, critical
-from server import send, receive
 from controller import Controller, Controller_RPi
+from comunication import HEADERSIZE, receive, send
 
 class Client():
 
