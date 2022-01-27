@@ -6,7 +6,6 @@ from abc import ABC, abstractmethod
 import numpy as np
 import torch
 
-SHOW_LIVE_STREAM = True
 
 class Detector(ABC):
     def __init__(self, target: str):
@@ -22,6 +21,10 @@ class Detector(ABC):
 
     @abstractmethod
     def get_location(self, image) -> tuple:
+        pass
+
+    @abstractmethod
+    def render(self) -> None:
         pass
 
 class Detector_Yolov5(Detector):
@@ -41,35 +44,44 @@ class Detector_Yolov5(Detector):
         model.to(device)
         return model
 
-    def get_location(self, image) -> tuple:
+    def get_location(self, image) -> list:
         start = time.time()
 
-        results = self.model(image)
-
-        if SHOW_LIVE_STREAM:
-            labeled_img = self._get_labeled_image(results, image)
-            cv2.imshow('result', np.asarray(labeled_img, dtype=np.uint8))
-            #if cv2.waitKey(1) == ord('q'):
-            #    cv2.destroyAllWindows()
-            cv2.waitKey(1)
-
-        x, y = self._get_target_cords(results)
-
-        if x!=0 or y!=0:
-        else:
+        self.image = image
+        self.results = self.model(image)
+        self.mid_cords = self._get_target_mid_cords(self.results)
+        norm_mid_cords = self._norm_to_nxn_grid(10, self.mid_cords, self.image)
 
         self._print_time(start)
+        return norm_mid_cords
 
-        return x,y
+    def _norm_to_nxn_grid(self, n: int, cords: list, image) -> list:
+        # TODO: chech if the image shape is ok, 1 is x and 0 is y (and not the other way around)
+        x_shape, y_shape = image.shape[1], image.shape[0]
+        x_norm = (cords[0]/x_shape) * n
+        y_norm = (cords[1]/y_shape) * n
+        return [x_norm, y_norm]
 
-    def _get_target_cords(self, results):
+
+
+
+    def render(self):
+        labeled_img = self._get_labeled_image(self.results, self.image)
+        cv2.imshow('result', np.asarray(labeled_img, dtype=np.uint8))
+        #if cv2.waitKey(1) == ord('q'):
+        #    cv2.destroyAllWindows()
+        cv2.waitKey(1)
+
+    def _get_target_mid_cords(self, results) -> list:
         cords = results.xyxy[0].numpy()
 
         # select target records
         target_cords = cords[cords[:,5]==self.target_num]
         if len(target_cords) == 0:
             logging.debug(f'did not found {self.target}')
-            return 0,0
+            # TODO not to return None (action will be nan)
+            # TODO cont. realtime venv/gym return up to -1 and 11 with done is True
+            return [0,0]
         # select above confidence threshold
         target_cords = target_cords[target_cords[:, 4]>self.confidence_threshold]
         # take x, y of the first match/row
@@ -77,22 +89,24 @@ class Detector_Yolov5(Detector):
         x_mid = (abs(x2-x1)/2) + x1
         y_mid = (abs(y2-y1)/2) + y1
         logging.debug(f'found {self.target} in x={x_mid} and y={y_mid}')
-        return x_mid, y_mid
+        return [x_mid, y_mid]
 
 
     def _get_labeled_image(self, results, image):
-        labels, cord = self._score_image(results)
+        labels, cord = self._get_labels_and_cords(results)
         labeled_img = self._plot_boxes(labels, cord, image)
         return labeled_img
 
     """
     The function below identifies the device which is availabe to make the prediction and uses it to load and infer the frame. Once it has results it will extract the labels and cordinates(Along with scores) for each object detected in the frame.
     """
-    def _score_image(self, results):
+    def _get_labels_and_cords(self, results):
         #frame = [torch.tensor(frame)]
         #results = model(frame)
-        labels = results.xyxyn[0][:, -1].numpy() # all rows last column
-        cord = results.xyxyn[0][:, :-1].numpy() # all rows all columns except last
+        #labels = results.xyxyn[0][:, -1].numpy() # all rows last column
+        #cord = results.xyxyn[0][:, :-1].numpy() # all rows all columns except last
+        labels = results.xyxy[0][:, -1].numpy() # all rows last column
+        cord = results.xyxy[0][:, :-1].numpy() # all rows all columns except last
         return labels, cord
 
     """
@@ -100,16 +114,17 @@ class Detector_Yolov5(Detector):
     """
     def _plot_boxes(self, labels, cord, image):
         n = len(labels)
-        x_shape, y_shape = image.shape[1], image.shape[0]
+        #x_shape, y_shape = image.shape[1], image.shape[0]
         for i in range(n):
             row = cord[i]
             # If score is less than 0.2 we avoid making a prediction.
             if row[4] < 0.2:
                 continue
-            x1 = int(row[0]*x_shape)
-            y1 = int(row[1]*y_shape)
-            x2 = int(row[2]*x_shape)
-            y2 = int(row[3]*y_shape)
+            #x1 = int(row[0]*x_shape)
+            #y1 = int(row[1]*y_shape)
+            #x2 = int(row[2]*x_shape)
+            #y2 = int(row[3]*y_shape)
+            x1, y1, x2, y2 = int(row[0]), int(row[1]), int(row[2]), int(row[3])
             bgr = (0, 255, 0) # color of the box
             classes = self.model.names # Get the name of label index
             label_font = cv2.FONT_HERSHEY_SIMPLEX #Font for the label.
