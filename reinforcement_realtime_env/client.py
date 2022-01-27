@@ -25,8 +25,8 @@ class Client():
         try:
             while True:
                 image = self.controller.get_image()
-                self._send(image)
-                action = int(self._receive())
+                send(self.server_socket, image)
+                action = int(receive(self.server_socket))
                 self.controller.do_action(action)
         except:
             logging.warning(f'client stopped, exiting clean.')

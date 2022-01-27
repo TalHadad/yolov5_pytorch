@@ -20,6 +20,10 @@ class Controller(ABC):
         cap.release()
         return frame
 
+    @abstractmethod
+    def exit_clean(self):
+        pass
+
 class Controller_RPi(Controller):
     '''
     Raspberry pi controller of pwms and camera

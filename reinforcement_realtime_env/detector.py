@@ -37,7 +37,8 @@ class Detector_Yolov5(Detector):
         label_num_map = {'person': 0, 'cat': 15, 'dog': 16}
         self.target_num = label_num_map[self.target]
         self.confidence_threshold = confidence_threshold
-
+    def exit_clean(self):
+        pass
     def _get_model(self):
         model = torch.hub.load('ultralytics/yolov5', 'yolov5s', pretrained=True)
         device = 'cuda' if torch.cuda.is_available() else 'cpu'

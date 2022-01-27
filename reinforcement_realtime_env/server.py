@@ -38,8 +38,8 @@ class Server():
                 # self.detector.render()
                 action = self.agent.choose_action_and_prep(location)
                 send(self.client_socket, action)
-        except:
-            logging.warning(f'server stopped, exiting clean')
+        except Exception as e:
+            logging.warning(f'server stopped, exiting clean, exception {e}')
             self.detector.exit_clean()
             self.agent.exit_clean()
 
