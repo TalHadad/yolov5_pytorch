@@ -27,6 +27,10 @@ class Detector(ABC):
     def render(self) -> None:
         pass
 
+    @abstractmethod
+    def exit_clean(self):
+        pass
+
 class Detector_Yolov5(Detector):
     def __init__(self, target: str = 'cat', confidence_threshold: float = 0.6):
         super(Detector_Yolov5, self).__init__(target)

@@ -38,6 +38,10 @@ class Agent(ABC):
     def choose_action(self, state):
         pass
 
+    @abstractmethod
+    def choose_action_and_prep(self, state):
+        pass
+
 
 # 1. start with the noise
 # OU stand for Ornstein Ullembeck
