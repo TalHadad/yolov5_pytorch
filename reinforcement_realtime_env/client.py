@@ -1,7 +1,7 @@
 # client.py
 import socket
 import logging # debug, info, warning, error, critical
-from controller import Controller, Controller_RPi
+from controller import Controller
 from comunication import HEADERSIZE, receive, send
 
 class Client():
@@ -40,5 +40,11 @@ class Client():
 if __name__ == '__main__':
     ip = '192.168.1.106'
     port = 8003
+
+    from controller import Controller_RPi
     client = Client(ip, port, controller=Controller_RPi())
+
+    #from controller import ControllerSimple
+    #client = Client(ip, port, controller=ControllerSimple())
+
     client.start()
