@@ -4,6 +4,8 @@ from abc import ABC, abstractmethod
 import logging
 import cv2
 
+import RPi.GPIO as GPIO
+GPIO.setmode(GPIO.BOARD)
 class Controller(ABC):
 
     @abstractmethod
@@ -34,8 +36,6 @@ class Controller_RPi(Controller):
     '''
 
     def __init__(self):
-        import RPi.GPIO as GPIO
-        GPIO.setmode(GPIO.BOARD)
         self.pins = {'forward': 11, # 11 = backward (white)
                      'backward': 12, # 12 = forward (purple)
                      'right': 13, # 13 = right (green)

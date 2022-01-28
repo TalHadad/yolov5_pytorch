@@ -25,8 +25,11 @@ class Client():
         try:
             while True:
                 image = self.controller.get_image()
+                print(f'sending image (type {type(image)}).')
                 send(self.server_socket, image)
+                print(f'waiting for server action.')
                 action = int(receive(self.server_socket))
+                print(f'got from server action {action}')
                 self.controller.do_action(action)
         except Exception as e:
             logging.warning(f'client stopped, exiting clean, exception {e}')
