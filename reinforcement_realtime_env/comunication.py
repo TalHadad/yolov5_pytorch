@@ -12,9 +12,14 @@ def receive(socket) -> str:
     while not got_full_msg:
         part_msg = socket.recv(16)
         if is_new_msg:
+            # WARNING:root:client stopped, exiting clean, exception invalid literal for int() with base 10: b''
+            # TODO: debug on client (at raspberry pi)
+            if part_msg == b'':
+                print(f'got empty message')
+                raise RuntimeError('Got empty message')
             len_msg = int(part_msg[:HEADERSIZE])
             is_new_msg = False
-            logging.debug(f"got new message length: {len_msg}")
+            logging.info(f"got new message length: {len_msg}")
 
         full_msg += part_msg
 

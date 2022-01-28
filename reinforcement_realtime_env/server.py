@@ -33,11 +33,15 @@ class Server():
         #self.agent.load_models()
         try:
             while True:
-                image = receive(self.socket)
+                image = receive(self.client_socket)
+                print(f'received from client image (type {type(image)}).')
                 location = self.detector.get_location(image)
-                # self.detector.render()
-                action = self.agent.choose_action_and_prep(location)
+                print(f'got location {location}.')
+                self.detector.render()
+                action = self.agent.choose_action_and_prep_with_env(location)
+                print(f'selected action {action}.')
                 send(self.client_socket, action)
+                print(f'sent to client.')
         except Exception as e:
             logging.warning(f'server stopped, exiting clean, exception {e}')
             self.detector.exit_clean()
