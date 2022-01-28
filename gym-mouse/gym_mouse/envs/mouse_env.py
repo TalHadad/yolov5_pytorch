@@ -103,7 +103,7 @@ class MouseEnv(gym.Env):
         self.curr_step += 1
         self._take_action(action)
         reward = self._get_reward()
-        ob = self._get_state()
+        ob = self.get_state()
         return ob, reward, self.done, {}
 
     def _location_out_of_range(self) -> bool:
@@ -131,12 +131,12 @@ class MouseEnv(gym.Env):
         self.done = False
         self.location: List[int] = [random.randrange(11), random.randrange(11)]
         self.curr_episode += 1
-        return self._get_state()
+        return self.get_state()
 
-    def _render(self, mode: str = "human", close: bool = False) -> None:
+    def render(self, mode: str = "human", close: bool = False) -> None:
         print(f'current location: {self.location}')
 
-    def _get_state(self) -> List[int]:
+    def get_state(self) -> List[int]:
         """Get the observation."""
         ob = self.location
         return ob

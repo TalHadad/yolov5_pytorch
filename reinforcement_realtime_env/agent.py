@@ -42,6 +42,14 @@ class Agent(ABC):
     def choose_action_and_prep_with_env(self, state):
         pass
 
+    @abstractmethod
+    def exit_clean(self):
+        pass
+
+    @abstractmethod
+    def load_models(self):
+        pass
+
 
 # 1. start with the noise
 # OU stand for Ornstein Ullembeck
