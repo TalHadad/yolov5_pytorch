@@ -7,7 +7,7 @@ import gym
 import gym_mouse_lib.gym_mouse
 
 from detector import Detector, Detector_Yolov5
-from agent import Agent, Agent_DDPG
+from agent import Agent, AgentDDPG, AgentEnv
 from comunication import receive, send
 
 
@@ -35,34 +35,14 @@ class Server():
         try:
             while True:
                 image = receive(self.client_socket)
-                print(f'received from client image (type {type(image)}).')
+                logging.info(f'received from client image (type {type(image)}).')
                 location = self.detector.get_location(image)
-                print(f'got location {location}.')
+                logging.info(f'got location {location}.')
                 self.detector.render()
-                action = self.agent.choose_action_and_prep_with_env(location)
-                print(f'selected action {action}.')
+                action = self.agent.choose_action_and_prep_with_env_simple(location)
+                logging.info(f'selected action {action}.')
                 send(self.client_socket, action)
-                print(f'sent to client.')
-        except Exception as e:
-            logging.warning(f'server stopped, exiting clean, exception {e}')
-            self.detector.exit_clean()
-            self.agent.exit_clean()
-
-    def start(self) -> None:
-        logging.info('starting server.')
-        self._wait_for_client()
-        #self.agent.load_models()
-        try:
-            while True:
-                image = receive(self.client_socket)
-                print(f'received from client image (type {type(image)}).')
-                location = self.detector.get_location(image)
-                print(f'got location {location}.')
-                self.detector.render()
-                action = self.agent.choose_action_and_prep_with_env(location)
-                print(f'selected action {action}.')
-                send(self.client_socket, action)
-                print(f'sent to client.')
+                logging.info(f'sent to client.')
         except Exception as e:
             logging.warning(f'server stopped, exiting clean, exception {e}')
             self.detector.exit_clean()
@@ -76,22 +56,15 @@ class Server():
         logging.info('virtual starting server.')
         env = gym.make('Mouse-v0')
         env.reset()
-        #self._wait_for_client()
-        self.agent.load_models()
+        # self.agent.load_models()
         try:
             while True:
-                #image = receive(self.client_socket)
-                #print(f'received from client image (type {type(image)}).')
-                #location = self.detector.get_location(image)
-                location = env.get_state()
-                print(f'got location {location}.')
-                #self.detector.render()
-                env.render()
-                action = self.agent.choose_action_and_prep_with_env(location)
-                print(f'selected action {action}.')
-                #send(self.client_socket, action)
-                #print(f'sent to client.')
-                env.step_realtime(action)
+                location = env.detector_get_location()
+                logging.info(f'got location {location}.')
+                #env.detector_render()
+                action = self.agent.choose_action_and_prep_with_env_simple(location)
+                logging.info(f'selected action {action}.')
+                env.controller_do_action(action)
         except Exception as e:
             logging.warning(f'server stopped, exiting clean, exception {e}')
             self.agent.exit_clean()
@@ -101,7 +74,11 @@ if __name__ == '__main__':
     ip = '192.168.1.106'
     port = 8003
     target = 'person'
-    server = Server(ip, port, Detector_Yolov5(target), Agent_DDPG())
+
+    input_dims = (2,)
+    n_actions = 7
+    env = AgentEnv(input_dims, n_actions)
+    server = Server(ip, port, Detector_Yolov5(target), AgentDDPG(env=env))
 
     #server.start()
     server.virtual_start()

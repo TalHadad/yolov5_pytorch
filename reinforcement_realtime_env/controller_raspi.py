@@ -39,6 +39,11 @@ class Controller_RPi(Controller):
            5 = backward left
            6 = backward right
         '''
+        # no target found
+        if action == -1:
+            logging.info(f"no target found, action is {action} and last state env is None")
+            pass
+
         # stop (do nothing)
         if action == 0:
             logging.debug("target isn't moving: doing nothing.")

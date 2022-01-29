@@ -19,11 +19,10 @@
 # 4. class for our actor (as the agent)
 
 from abc import ABC, abstractmethod
-import random
 import logging
-
 logging.basicConfig(level=logging.INFO)
 import os
+from typing import Any, Dict, List, Tuple
 import torch as T
 import torch.nn as nn
 import torch.nn.functional as F
@@ -39,7 +38,7 @@ class Agent(ABC):
         pass
 
     @abstractmethod
-    def choose_action_and_prep_with_env(self, state):
+    def choose_action_and_prep_with_env_simple(self, state):
         pass
 
     @abstractmethod
@@ -293,45 +292,49 @@ class ActorNetwork(nn.Module):
         print('... loading checkpoint ...')
         self.load_state_dict(T.load(self.checkpoint_file))
 
+
 MAX_SINGLE_GAME_ITERATION = 1000
+
+
+# TODO merge MouseEnv and step for virtual server
 class AgentEnv(object):
 
-      def __init__(self, agent):
-            self.agent = agent
-            self._init_env()
-            self._init_game()
+    def __init__(self, input_dims, n_actions: int):
+        self._init_env(input_dims, n_actions)
+        self.init_game()
 
-      def _init_env(self):
-            # environment parameters
-            self.game_index = 0
-            self.best_score = 0
-            self.score_history = []
+    def _init_env(self, input_dims, n_actions: int):
+        # environment parameters
+        self.input_dims = input_dims
+        self.n_actions = n_actions
+        self.game_counter = 0
+        self.best_score = 0
+        self.score_history = []
 
-      def _init_game(self):
-            # game parameters
-            self.last_action = -1
-            self.last_state = None
-            self.done = False
-            self.score = 0 # reward range [0] for to optimize negative reward ranges
-            self.iteration_counter = 0
-            self.agent.noise.reset()
+    def init_game(self):
+        # game parameters
+        self.last_action = -1
+        self.last_state = None
+        self.done = False
+        self.score = 0  # reward range [0] for to optimize negative reward ranges
+        self.game_step_counter = 0
 
-      def exit_clean(self):
+    def exit_clean(self):
         self._plot_learning_curve()
 
-      def _plot_learning_curve(self):
-            running_avg = np.zeros(len(self.score_history))
-            for i in range(len(running_avg)):
-                  running_avg[i] = np.mean(self.score_history[max(0, i - 100):(i + 1)])
+    def _plot_learning_curve(self):
+        running_avg = np.zeros(len(self.score_history))
+        for i in range(len(running_avg)):
+            running_avg[i] = np.mean(self.score_history[max(0, i - 100):(i + 1)])
 
-            x = [i + 1 for i in range(self.game_index)]
-            plt.plot(x, running_avg)
-            plt.title('Running average of previous 100 scores')
-            filename = f'Mouse_{self.game_index}_games_time_{datetime.datetime.now()}'
-            figure_file = f'plots/{filename}.png'
-            plt.savefig(figure_file)
+        x = [i + 1 for i in range(self.game_counter)]
+        plt.plot(x, running_avg)
+        plt.title('Running average of previous 100 scores')
+        filename = f'Mouse_{self.game_counter}_games_time_{datetime.datetime.now()}'
+        figure_file = f'plots/{filename}.png'
+        plt.savefig(figure_file)
 
-      def get_reward(self, state):
+    def get_reward(self, state):
         # the grid is 10x10, and location ~(5,5) which is the middle is where we want to be.
         # so state which is location of 4-6 in both axes (x and y, state[0] and state[1]).
         reward = 0.0
@@ -345,67 +348,68 @@ class AgentEnv(object):
         self.score += reward
         return reward
 
-      def is_done(self, state) -> bool:
-        self.iteration_counter += 1
-        return state is None or \
-               state[0] <= 0 or \
-               state[1] <= 0 or \
-               state[0] > 10 or \
-               state[1] > 10 or \
-               self.iteration_counter > MAX_SINGLE_GAME_ITERATION
+    def is_done(self, state) -> bool:
+        self.game_step_counter += 1
+        return (state[0] == 0 and state[1] == 0) \
+               or state[0] < 0 or state[1] < 0 \
+               or state[0] > 10 or state[1] > 10 \
+               or self.game_step_counter > MAX_SINGLE_GAME_ITERATION
 
-      def init_game(self):
-            self.game_index += 1
-            self.score_history.append(self.score)
-            avg_score = np.mean(self.score_history[-100:])
-            if avg_score > self.best_score:
-                  self.best_score = avg_score
-                  self.agent.save_models()
-            logging.info(f'{self.__class__.__name__}.init_game: score {self.score}, '
-                         f'average score {avg_score}, '
-                         f'best score {self.best_score},'
-                         f'iteration counter {self.iteration_counter}')
-            #print(f'{self.__class__.__name__}.init_game: score {self.score}, average score {avg_score}, best score {self.best_score}')
+    def save_score(self) -> None:
+        self.game_counter += 1
+        self.score_history.append(self.score)
 
-            self._init_game()
+    def is_best_score(self) -> bool:
+        is_best_score = False
+        avg_score = np.mean(self.score_history[-100:])
+        if avg_score > self.best_score:
+            self.best_score = avg_score
+            is_best_score = True
+            logging.info(f'saving models')
+        logging.info(f'{self.__class__.__name__}: '
+                     f'score {self.score}, '
+                     f'average score {avg_score}, '
+                     f'best score {self.best_score}, '
+                     f'game step counter {self.game_step_counter}')
+        return is_best_score
 
-      def first_step(self) -> bool:
-            return self.last_state is None
+    def first_step(self) -> bool:
+        return self.last_state is None
 
 
 
-class Agent_DDPG(Agent):
+class AgentDDPG(Agent):
     # env to get the action space
     # gamma (agent discount factor) = 0.99 is 1% to value reward now that the future, because there's uncertainty in the future, typically is 0.95 to 0.99
     # n_action is 2, becase many environment has only 2 action
     # layers size came from the paper
 
-    def __init__(self, alpha: float = 0.0001, beta: float = 0.001, input_dims: tuple = (2,),
-                 tau: float = 0.001, gamma: float = 0.99, n_actions: int = 7, max_size: int = 1000000,
+    def __init__(self, env, alpha: float = 0.0001, beta: float = 0.001,
+                 tau: float = 0.001, gamma: float = 0.99, max_size: int = 1000000,
                  layer1_size: int = 400, layer2_size: int = 300, batch_size: int = 64):
         self.alpha = alpha
         self.beta = beta
-        self.input_dims = input_dims
+        self.input_dims = env.input_dims
         self.gamma = gamma
-        self.n_actions = n_actions
+        self.n_actions = env.n_actions
         self.tau = tau
-        self.memory = ReplayBuffer(max_size, input_dims, n_actions)
+        self.memory = ReplayBuffer(max_size, self.input_dims, self.n_actions)
         self.batch_size = batch_size
-        self.actor = ActorNetwork(alpha, input_dims, layer1_size, layer2_size, n_actions=n_actions, name='Actor')
+        self.actor = ActorNetwork(alpha, self.input_dims, layer1_size, layer2_size, n_actions=self.n_actions, name='Actor')
 
         # much like the deep Q network algorithm, this uses taget networks as well as the base network,
         # so it's an off policy method.
         # This will allow us to have multiple different agents with similar names.
-        self.target_actor = ActorNetwork(alpha, input_dims, layer1_size, layer2_size, n_actions=n_actions,
+        self.target_actor = ActorNetwork(alpha, self.input_dims, layer1_size, layer2_size, n_actions=self.n_actions,
                                          name='TargetActor')
 
-        self.critic = CriticNetwork(beta, input_dims, layer1_size, layer2_size, n_actions=n_actions, name='Critic')
-        self.target_critic = CriticNetwork(beta, input_dims, layer1_size, layer2_size, n_actions=n_actions,
+        self.critic = CriticNetwork(beta, self.input_dims, layer1_size, layer2_size, n_actions=self.n_actions, name='Critic')
+        self.target_critic = CriticNetwork(beta, self.input_dims, layer1_size, layer2_size, n_actions=self.n_actions,
                                            name='TargetCritic')
         # This is very similar to key learning, where you have Q eval and Q next (or Q target, whatever you want to call it).
         # It's the same concept.
 
-        self.noise = OUActionNoise(mu=np.zeros(n_actions))
+        self.noise = OUActionNoise(mu=np.zeros(self.n_actions))
 
         self.update_network_parameters(tau=1)
         # what this does is to solve a problem of a moving target,
@@ -418,11 +422,10 @@ class Agent_DDPG(Agent):
         # Except that we have 4 networks instead of 2.
 
         # me: do main init commands to keep elegant use of agent
-        #self._preparation_init()
-        self.env = AgentEnv(agent=self)
-        # TODO
-        self.load_models()
-        self.iteration_counter = 0
+        # self._preparation_init()
+        self.env = env
+        self.last_action_probs = None
+
     def choose_action(self, state):
         # very important: you have to put the actor into evaluation mode.
         # this doesn't perform an evaluation step,
@@ -457,11 +460,12 @@ class Agent_DDPG(Agent):
     def choose_action_and_prep_with_env(self, state) -> int:
         # first time, no previous state
         if self.env.first_step():
-            # select action
+            # select action and don't learn, because there is no last step
             self.env.last_state = state
             self.last_action_probs = self.choose_action(state)
         elif self.last_action_probs is None:
-            logging.warning(f'rememberring None, should not be happening.')
+            logging.warning(f'remembering None, should not be happening.')
+            raise RuntimeError(f'remembering None, should not be happening.')
         # not first time
         else:
             # learn from previous state
@@ -471,32 +475,55 @@ class Agent_DDPG(Agent):
             self.learn()
 
             if done:
-                  self._init_game()
+                self.reset_game()
             else:
-                  self.env.last_state = state
-                  self.last_action_probs = self.choose_action(state)
-                  if str(self.last_action_probs[0]) == 'nan':
-                        logging.error(f'action is nan {self.last_action_probs}')
-                        raise RuntimeError('action is nan')
+                self.env.last_state = state
+                self.last_action_probs = self.choose_action(state)
+                if str(self.last_action_probs[0]) == 'nan':
+                    logging.error(f'action is nan {self.last_action_probs}')
+                    raise RuntimeError('action is nan')
         self.env.last_action = int(np.argmax(self.last_action_probs))
         return self.env.last_action
+    def choose_action_and_prep_with_env_simple(self, state) -> int:
+        reward = self.env.get_reward(state)
+        done = self.env.is_done(state)
+        if not self.env.first_step(): # last state is not None
+            # learn from previous state
+            logging.info(f'not first step, learning from {self.env.last_state}, {np.argmax(self.last_action_probs)}, {reward}, {state}, {done}')
+            self.remember(self.env.last_state, self.last_action_probs, reward, state, done)
+            self.learn()
+        if not done:
+            # select action
+            self.env.last_state = state
+            self.last_action_probs = self.choose_action(state)
+            self.env.last_action = int(np.argmax(self.last_action_probs))
+            logging.info(f'not done, selected action {self.env.last_action}')
+        else:
+            logging.info(f'game over! {self.env.last_state}, {self.env.last_action}, {reward}, {state}, {done}')
+            self.reset_game()
+        return self.env.last_action
 
-    def _init_game(self):
-          self.env.init_game()
+
+    def reset_game(self):
+        self.env.save_score()
+        if self.env.is_best_score():
+            self.save_models()
+        self.env.init_game()
+        self.noise.reset()
 
     def exit_clean(self):
         self.env.exit_clean()
-        #self._plot_learning_curve()
-##############################################333
+        # self._plot_learning_curve()
+
+    ##############################################333
     def _preparation_init(self):
-          # init for all games
+        # init for all games
         self.game_index = 0
         self.best_score = 0
         self.score_history = []
         self._preparation_game_init()
 
     def _preparation_game_init(self):
-
 
         # init for each game/done=True
         self.last_state = None
