@@ -22,14 +22,14 @@ class Controller_RPi(Controller):
         self.wait_seconds = 2
         self.pwm_frequency = 100
         self.pwm_duty_cycle = 100
-        self.pwms =  self._pwm_setup(self.pins)
+        self.pwms = self._pwm_setup(self.pins)
 
     def _pwm_setup(self, pins: dict) -> list:
         logging.info('setting GPIOs.')
-        pwms = []
+        pwms = {}
         for pin in pins:
             GPIO.setup(pins[pin], GPIO.OUT)
-            pwms.append(GPIO.PWM(pins[pin], self.pwm_frequency))
+            pwms[pin] = GPIO.PWM(pins[pin], self.pwm_frequency)
         return pwms
 
     def do_action(self, action: int) -> None:
@@ -105,29 +105,29 @@ class Controller_RPi(Controller):
 
     def exit_clean(self) -> None:
         logging.info(f'exiting clean.')
-        for pwm in self.pwms:
-            pwm.stop()
+        for pin in self.pwms:
+            pwm[pin].stop()
         GPIO.cleanup()
 
     def _wait(self) -> None:
         time.sleep(self.wait_seconds)
 
     def _move_forward(self) -> None:
-        self.pwms[self.pins['forward']].start(self.pwm_duty_cycle)
+        self.pwms['forward'].start(self.pwm_duty_cycle)
     def _stop_forward(self) -> None:
-        self.pwms[self.pins['forward']].stop()
+        self.pwms['forward'].stop()
 
     def _move_left(self) -> None:
-        self.pwms[self.pins['left']].start(self.pwm_duty_cycle)
+        self.pwms['left'].start(self.pwm_duty_cycle)
     def _stop_left(self) -> None:
-        self.pwms[self.pins['left']].stop()
+        self.pwms['left'].stop()
 
     def _move_right(self) -> None:
-        self.pwms[self.pins['right']].start(self.pwm_duty_cycle)
+        self.pwms['right'].start(self.pwm_duty_cycle)
     def _stop_right(self) -> None:
-        self.pwms[self.pins['right']].stop()
+        self.pwms['right'].stop()
 
     def _move_backward(self) -> None:
-        self.pwms[self.pins['backward']].start(self.pwm_duty_cycle)
+        self.pwms['backward'].start(self.pwm_duty_cycle)
     def _stop_backward(self) -> None:
-        self.pwms[self.pins['backward']].stop()
+        self.pwms['backward'].stop()
