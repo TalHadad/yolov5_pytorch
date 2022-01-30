@@ -84,13 +84,14 @@ class Detector_Yolov5(Detector):
 
         # select target records
         target_cords = cords[cords[:,5]==self.target_num]
+        #target_cords = target_cords[target_cords[:, 4]>self.confidence_threshold]
         if len(target_cords) == 0:
             logging.debug(f'did not found {self.target}')
             # TODO not to return None (action will be nan)
             # TODO cont. realtime venv/gym return up to -1 and 11 with done is True
             return [0,0]
         # select above confidence threshold
-        target_cords = target_cords[target_cords[:, 4]>self.confidence_threshold]
+
         # take x, y of the first match/row
         x1, y1, x2, y2 = target_cords[0][0], target_cords[0][1], target_cords[0][2], target_cords[0][3]
         x_mid = (abs(x2-x1)/2) + x1
