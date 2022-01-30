@@ -35,7 +35,7 @@ class Server():
     def start(self) -> None:
         log.info('starting server.')
         self._wait_for_client()
-        #self.agent.load_models()
+        self.agent.load_models()
         try:
             while True:
                 image = receive(self.client_socket)
@@ -88,5 +88,5 @@ if __name__ == '__main__':
     env = AgentEnv(input_dims, n_actions)
     server = Server(ip, port, Detector_Yolov5(target), AgentDDPG(env=env))
 
-    #server.start()
-    server.virtual_start()
+    server.start()
+    #server.virtual_start()
