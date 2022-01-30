@@ -7,8 +7,8 @@ Each episode is trying to put the cat in the middle of the image.
 
 # Core Library
 import logging
-
-logging.basicConfig(level=logging.INFO)
+from reinforcement_realtime_env import LOGGING_LEVEL
+logging.basicConfig(level=LOGGING_LEVEL)
 import random
 from typing import Any, Dict, List, Tuple
 

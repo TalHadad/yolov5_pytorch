@@ -1,6 +1,9 @@
 # client.py
 import socket
 import logging # debug, info, warning, error, critical
+from reinforcement_realtime_env import LOGGING_LEVEL
+logging.basicConfig(level=LOGGING_LEVEL)
+
 from controller import Controller
 from comunication import HEADERSIZE, receive, send
 

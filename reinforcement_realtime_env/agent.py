@@ -20,7 +20,8 @@
 
 from abc import ABC, abstractmethod
 import logging
-logging.basicConfig(level=logging.INFO)
+from reinforcement_realtime_env import LOGGING_LEVEL
+logging.basicConfig(level=LOGGING_LEVEL)
 import os
 from typing import Any, Dict, List, Tuple
 import torch as T
@@ -365,8 +366,8 @@ class AgentEnv(object):
         if avg_score > self.best_score:
             self.best_score = avg_score
             is_best_score = True
-            logging.info(f'saving models')
-        logging.info(f'{self.__class__.__name__}: '
+            logging.warning(f'saving models')
+        logging.warning(f'{self.__class__.__name__}: '
                      f'score {self.score}, '
                      f'average score {avg_score}, '
                      f'best score {self.best_score}, '

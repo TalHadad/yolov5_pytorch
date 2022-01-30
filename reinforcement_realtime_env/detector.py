@@ -1,6 +1,8 @@
 # detector.py
 import cv2
 import logging
+from reinforcement_realtime_env import LOGGING_LEVEL
+logging.basicConfig(level=LOGGING_LEVEL)
 import time
 from abc import ABC, abstractmethod
 import numpy as np

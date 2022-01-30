@@ -1,7 +1,8 @@
 # server.py
 import socket as s
 import logging
-logging.basicConfig(level=logging.INFO)
+from reinforcement_realtime_env import LOGGING_LEVEL
+logging.basicConfig(level=LOGGING_LEVEL)
 
 import gym
 import gym_mouse_lib.gym_mouse
