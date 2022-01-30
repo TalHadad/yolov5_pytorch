@@ -22,6 +22,8 @@ from abc import ABC, abstractmethod
 import logging
 from reinforcement_realtime_env import LOGGING_LEVEL
 logging.basicConfig(level=LOGGING_LEVEL)
+log = logging.getLogger('agent')
+log.setLevel(LOGGING_LEVEL)
 import os
 from typing import Any, Dict, List, Tuple
 import torch as T
@@ -366,8 +368,8 @@ class AgentEnv(object):
         if avg_score > self.best_score:
             self.best_score = avg_score
             is_best_score = True
-            logging.warning(f'saving models')
-        logging.warning(f'{self.__class__.__name__}: '
+            log.warning(f'saving models')
+        log.warning(f'{self.__class__.__name__}: '
                      f'score {self.score}, '
                      f'average score {avg_score}, '
                      f'best score {self.best_score}, '
@@ -465,7 +467,7 @@ class AgentDDPG(Agent):
             self.env.last_state = state
             self.last_action_probs = self.choose_action(state)
         elif self.last_action_probs is None:
-            logging.warning(f'remembering None, should not be happening.')
+            log.warning(f'remembering None, should not be happening.')
             raise RuntimeError(f'remembering None, should not be happening.')
         # not first time
         else:
@@ -481,7 +483,7 @@ class AgentDDPG(Agent):
                 self.env.last_state = state
                 self.last_action_probs = self.choose_action(state)
                 if str(self.last_action_probs[0]) == 'nan':
-                    logging.error(f'action is nan {self.last_action_probs}')
+                    log.error(f'action is nan {self.last_action_probs}')
                     raise RuntimeError('action is nan')
         self.env.last_action = int(np.argmax(self.last_action_probs))
         return self.env.last_action
@@ -490,7 +492,7 @@ class AgentDDPG(Agent):
         done = self.env.is_done(state)
         if not self.env.first_step(): # last state is not None
             # learn from previous state
-            logging.info(f'not first step, learning from {self.env.last_state}, {np.argmax(self.last_action_probs)}, {reward}, {state}, {done}')
+            log.info(f'not first step, learning from {self.env.last_state}, {np.argmax(self.last_action_probs)}, {reward}, {state}, {done}')
             self.remember(self.env.last_state, self.last_action_probs, reward, state, done)
             self.learn()
         if not done:
@@ -498,9 +500,9 @@ class AgentDDPG(Agent):
             self.env.last_state = state
             self.last_action_probs = self.choose_action(state)
             self.env.last_action = int(np.argmax(self.last_action_probs))
-            logging.info(f'not done, selected action {self.env.last_action}')
+            log.info(f'not done, selected action {self.env.last_action}')
         else:
-            logging.info(f'game over! {self.env.last_state}, {self.env.last_action}, {reward}, {state}, {done}')
+            log.info(f'game over! {self.env.last_state}, {self.env.last_action}, {reward}, {state}, {done}')
             self.reset_game()
         return self.env.last_action
 
@@ -538,7 +540,7 @@ class AgentDDPG(Agent):
         if self.last_state is None:
             self.last_state = state
         elif self.last_action_probs is None:
-            logging.warning(f'rememberring None')
+            log.warning(f'rememberring None')
         else:
             reward = self._get_reward(state)
             # If the game is over (done=True), arg state should be None.
@@ -549,11 +551,11 @@ class AgentDDPG(Agent):
             self.score += reward
             self.last_state = state
             if done:
-                logging.info(
+                log.info(
                     f'{self.__class__.__name__}._preparation_selection: game over, state {self.last_state}, score {self.score}, last_action {self.last_action_int}')
                 self._preparation_game_over()
                 self._preparation_game_init()
-                logging.info(
+                log.info(
                     f'{self.__class__.__name__}._preparation_selection: restart, state {self.last_state}, score {self.score}, last_action {self.last_action_int}')
 
     def _preparation_game_over(self):
@@ -563,7 +565,7 @@ class AgentDDPG(Agent):
         if self.avg_score > self.best_score:
             self.best_score = self.avg_score
             self.save_models()
-        logging.info(
+        log.info(
             f'{self.__class__.__name__}._preparation_game_over: score {self.score}, average score {self.avg_score}')
 
     def _plot_learning_curve(self):

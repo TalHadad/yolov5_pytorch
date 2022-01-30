@@ -3,6 +3,8 @@ import socket
 import logging # debug, info, warning, error, critical
 from reinforcement_realtime_env import LOGGING_LEVEL
 logging.basicConfig(level=LOGGING_LEVEL)
+log = logging.getLogger('client')
+log.setLevel(LOGGING_LEVEL)
 
 from controller import Controller
 from comunication import HEADERSIZE, receive, send
@@ -18,13 +20,13 @@ class Client():
         try:
             server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             server_socket.connect((ip, port))
-            logging.info(f'client is connected to server {ip}:{port}.')
+            log.info(f'client is connected to server {ip}:{port}.')
         except socket.error as err:
-            logging.error(f'socket {ip}:{port} creation failed with error {err}.')
+            log.error(f'socket {ip}:{port} creation failed with error {err}.')
         return server_socket
 
     def start(self) -> None:
-        logging.info('starting client.')
+        log.info('starting client.')
         try:
             while True:
                 image = self.controller.get_image()
@@ -35,7 +37,7 @@ class Client():
                 print(f'got from server action {action}')
                 self.controller.do_action(action)
         except Exception as e:
-            logging.warning(f'client stopped, exiting clean, exception {e}')
+            log.warning(f'client stopped, exiting clean, exception {e}')
             self.controller.exit_clean()
 
 

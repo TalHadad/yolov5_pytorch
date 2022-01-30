@@ -1,6 +1,10 @@
 # controller_raspi.py
 import logging
 from controller import Controller
+from reinforcement_realtime_env import LOGGING_LEVEL
+logging.basicConfig(level=LOGGING_LEVEL)
+log = logging.getLogger('controller_raspi')
+log.setLevel(LOGGING_LEVEL)
 
 import RPi.GPIO as GPIO
 GPIO.setmode(GPIO.BOARD)

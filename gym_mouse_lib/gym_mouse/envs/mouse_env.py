@@ -9,6 +9,8 @@ Each episode is trying to put the cat in the middle of the image.
 import logging
 from reinforcement_realtime_env import LOGGING_LEVEL
 logging.basicConfig(level=LOGGING_LEVEL)
+log = logging.getLogger('mouse_env')
+log.setLevel(LOGGING_LEVEL)
 import random
 from typing import Any, Dict, List, Tuple
 
@@ -27,7 +29,7 @@ class MouseEnv(gym.Env):
 
     def __init__(self) -> None:
         self.__version__ = "0.1.0"
-        logging.info(f"MouseEnv - Version {self.__version__}")
+        log.info(f"MouseEnv - Version {self.__version__}")
         self.action_space = spaces.Discrete(7)
         coordinate_low = np.array([-1, -1])
         coordinate_high = np.array([11, 11])
@@ -47,11 +49,11 @@ class MouseEnv(gym.Env):
         if action == -1: # last game is over
             self.game_step_counter = 0
             self.location: List[int] = [random.randrange(1, 11), random.randrange(1, 11)]  # the cat is somewere in the image.
-            logging.info(f'started at new location {self.location}')
+            log.info(f'started at new location {self.location}')
         else:
             self.location = self.action_switcher[action](self.location)
             if self.is_done(self.location):
-                logging.info(f'location is out of bound, {self.location}, game over!')
+                log.info(f'location is out of bound, {self.location}, game over!')
                 self.location = [0, 0]
 
     def is_done(self, state) -> bool:
@@ -83,7 +85,7 @@ class MouseEnv_old(gym.Env):
 
     def __init__(self) -> None:
         self.__version__ = "0.1.0"
-        logging.info(f"MouseEnv - Version {self.__version__}")
+        log.info(f"MouseEnv - Version {self.__version__}")
 
         # Define what the agent can do
         # Move forward, forward-left, forward-right, backward, backward-left, backward-right.
@@ -155,9 +157,9 @@ class MouseEnv_old(gym.Env):
             # Cat is out of the frame. Episode is done.
             # raise RuntimeError("Episode is done")
             # restart a game
-            logging.info(f'{self.__class__.__name__} game over, location {self.location}, done {self.done}')
+            log.info(f'{self.__class__.__name__} game over, location {self.location}, done {self.done}')
             self.reset()
-            logging.info(f'{self.__class__.__name__} restart, location {self.location}, done {self.done}')
+            log.info(f'{self.__class__.__name__} restart, location {self.location}, done {self.done}')
 
         self._take_action(action)
         reward = self._get_reward()
@@ -169,9 +171,9 @@ class MouseEnv_old(gym.Env):
             # Cat is out of the frame. Episode is done.
             # raise RuntimeError("Episode is done")
             # restart a game
-            logging.info(f'{self.__class__.__name__} game over, location {self.location}, done {self.done}')
+            log.info(f'{self.__class__.__name__} game over, location {self.location}, done {self.done}')
             self.reset()
-            logging.info(f'{self.__class__.__name__} restart, location {self.location}, done {self.done}')
+            log.info(f'{self.__class__.__name__} restart, location {self.location}, done {self.done}')
 
         self.controller_take_action(action)
         state = self.get_state()

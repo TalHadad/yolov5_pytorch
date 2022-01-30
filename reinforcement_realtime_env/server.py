@@ -1,8 +1,11 @@
 # server.py
+import socket
 import socket as s
 import logging
 from reinforcement_realtime_env import LOGGING_LEVEL
 logging.basicConfig(level=LOGGING_LEVEL)
+log = logging.getLogger('server')
+log.setLevel(LOGGING_LEVEL)
 
 import gym
 import gym_mouse_lib.gym_mouse
@@ -24,51 +27,55 @@ class Server():
             socket = s.socket(s.AF_INET, s.SOCK_STREAM)
             socket.bind((ip, port))
             socket.listen(5)  # param = number of clients
-            logging.info(f'server is binded to {ip}:{port}.')
+            log.info(f'server is binded to {ip}:{port}.')
         except s.error as err:
-            logging.error(f'socket {ip}:{port} creation failed with error {err}')
+            log.error(f'socket {ip}:{port} creation failed with error {err}')
         return socket
 
     def start(self) -> None:
-        logging.info('starting server.')
+        log.info('starting server.')
         self._wait_for_client()
         #self.agent.load_models()
         try:
             while True:
                 image = receive(self.client_socket)
-                logging.info(f'received from client image (type {type(image)}).')
+                log.info(f'received from client image (type {type(image)}).')
                 location = self.detector.get_location(image)
-                logging.info(f'got location {location}.')
+                log.info(f'got location {location}.')
                 self.detector.render()
                 action = self.agent.choose_action_and_prep_with_env_simple(location)
-                logging.info(f'selected action {action}.')
+                log.info(f'selected action {action}.')
                 send(self.client_socket, action)
-                logging.info(f'sent to client.')
+                log.info(f'sent to client.')
         except Exception as e:
-            logging.warning(f'server stopped, exiting clean, exception {e}')
-            self.detector.exit_clean()
-            self.agent.exit_clean()
+            log.warning(f'server stopped, exiting clean, exception {e}')
+            self.exit_clean()
 
     def _wait_for_client(self):
         self.client_socket, address = self.socket.accept()
-        logging.info(f'Connection from {address} has been established!')
+        log.info(f'Connection from {address} has been established!')
 
     def virtual_start(self):
-        logging.info('virtual starting server.')
+        log.info('virtual starting server.')
         env = gym.make('Mouse-v0')
         env.reset()
         # self.agent.load_models()
         try:
             while True:
                 location = env.detector_get_location()
-                logging.info(f'got location {location}.')
+                log.info(f'got location {location}.')
                 #env.detector_render()
                 action = self.agent.choose_action_and_prep_with_env_simple(location)
-                logging.info(f'selected action {action}.')
+                log.info(f'selected action {action}.')
                 env.controller_do_action(action)
         except Exception as e:
-            logging.warning(f'server stopped, exiting clean, exception {e}')
-            self.agent.exit_clean()
+            log.warning(f'server stopped, exiting clean, exception {e}')
+            self.exit_clean()
+
+    def exit_clean(self):
+        self.detector.exit_clean()
+        self.agent.exit_clean()
+        self.socket.close()
 
 if __name__ == '__main__':
     # ip = socket.gethostname()
