@@ -46,7 +46,7 @@ if __name__ == '__main__':
     ip = '192.168.1.106'
     port = 8003
 
-    from controller import Controller_RPi
+    from controller_raspi import Controller_RPi
     client = Client(ip, port, controller=Controller_RPi())
 
     #from controller import ControllerSimple
