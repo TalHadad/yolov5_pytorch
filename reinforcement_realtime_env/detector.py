@@ -102,6 +102,8 @@ class Detector_Yolov5(Detector):
 
     def _get_labeled_image(self, results, image):
         labels, cord = self._get_labels_and_cords(results)
+        if len(cord) == 0:
+            return image
         labeled_img = self._plot_boxes(labels, cord, image)
         return labeled_img
 

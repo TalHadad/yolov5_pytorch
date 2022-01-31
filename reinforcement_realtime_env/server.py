@@ -1,5 +1,5 @@
 # server.py
-import socket
+import traceback
 import socket as s
 import logging
 from reinforcement_realtime_env import LOGGING_LEVEL
@@ -49,6 +49,7 @@ class Server():
                 log.info(f'sent to client.')
         except Exception as e:
             log.warning(f'server stopped, exiting clean, exception {e}')
+            traceback.print_exception(type(e), e, e.__traceback__)
             self.exit_clean()
 
     def _wait_for_client(self):
@@ -79,7 +80,8 @@ class Server():
 
 if __name__ == '__main__':
     # ip = socket.gethostname()
-    ip = '192.168.1.106'
+    #ip = '192.168.1.106' # home
+    ip = '172.20.85.180' # be-all
     port = 8003
     target = 'person'
 
