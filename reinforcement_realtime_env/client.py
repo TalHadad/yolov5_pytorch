@@ -1,4 +1,5 @@
 # client.py
+import traceback
 import socket
 import logging # debug, info, warning, error, critical
 from reinforcement_realtime_env import LOGGING_LEVEL
@@ -29,6 +30,7 @@ class Client():
         log.info('starting client.')
         try:
             while True:
+                print(f'getting image')
                 image = self.controller.get_image()
                 print(f'sending image (type {type(image)}).')
                 send(self.server_socket, image)
@@ -38,12 +40,14 @@ class Client():
                 self.controller.do_action(action)
         except Exception as e:
             log.warning(f'client stopped, exiting clean, exception {e}')
+            traceback.print_exception(type(e), e, e.__traceback__)
             self.controller.exit_clean()
 
 
 
 if __name__ == '__main__':
-    ip = '192.168.1.106'
+    ip = '192.168.1.106' # home
+    #ip = '172.20.85.180' # be-all
     port = 8003
 
     from controller_raspi import Controller_RPi

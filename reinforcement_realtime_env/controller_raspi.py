@@ -1,8 +1,9 @@
 # controller_raspi.py
 import logging
+import time
 from controller import Controller
 from reinforcement_realtime_env import LOGGING_LEVEL
-logging.basicConfig(level=LOGGING_LEVEL)
+logging.basicConfig(level=logging.DEBUG)#LOGGING_LEVEL)
 log = logging.getLogger('controller_raspi')
 log.setLevel(LOGGING_LEVEL)
 
@@ -106,7 +107,7 @@ class Controller_RPi(Controller):
     def exit_clean(self) -> None:
         logging.info(f'exiting clean.')
         for pin in self.pwms:
-            pwm[pin].stop()
+            self.pwms[pin].stop()
         GPIO.cleanup()
 
     def _wait(self) -> None:
