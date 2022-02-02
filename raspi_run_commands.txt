@@ -1,4 +1,0 @@
-setxkbmap -option "ctrl:nocaps"
-cd ~/Desktop/yolov5_pytorch
-source ~/Desktop/yolov5_pytorch_env/bin/activate
-python3 client_raspi.py

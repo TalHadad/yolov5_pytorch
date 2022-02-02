@@ -7,7 +7,7 @@ Each episode is trying to put the cat in the middle of the image.
 
 # Core Library
 import logging
-from reinforcement_realtime_env import LOGGING_LEVEL
+from utils.logging_level import LOGGING_LEVEL
 logging.basicConfig(level=LOGGING_LEVEL)
 log = logging.getLogger('mouse_env')
 log.setLevel(LOGGING_LEVEL)

@@ -1,0 +1,6 @@
+$ source ~/virtualenv_environments/py38_yolov5_pytorch/bin/activate
+$ cd ~/Desktop/yolov5_pytorch
+(set port to ... in server_pc.py)
+$ python3 server_pc.py
+
+$ pip install pyzmq
