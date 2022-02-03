@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/../../app_server_home/.idea/app_server_home.iml" filepath="$PROJECT_DIR$/../../app_server_home/.idea/app_server_home.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/yolov5_pytorch.iml" filepath="$PROJECT_DIR$/.idea/yolov5_pytorch.iml" />
     </modules>
   </component>

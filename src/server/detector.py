@@ -29,19 +29,19 @@ class Detector(multiprocessing.Process, ABC):
         # server detector
         logging.info(f"detector binding to detector queue {self._conf['Detector']['ip']}:{self._conf['Detector']['port']}")
         self._detector_context = zmq.Context()
-        self._detector_socket = self._detector_context.socket(zmq.PULL)
-        self._detector_socket.bind(f"tcp://{self._conf['Detector']['ip']}:{self._conf['Detector']['port']}")
+        self._detector_socket = self._detector_context.socket(zmq.SUB)
+        self._detector_socket.connect(f"tcp://{self._conf['Detector']['ip']}:{self._conf['Detector']['port']}")
         # client render
         logging.info(f"detector connecting to render queue {self._conf['Render']['ip']}:{self._conf['Render']['port']}")
         self._render_context = zmq.Context()
-        self._render_socket = self._render_context.socket(zmq.PUSH)
-        self._render_socket.connect(f"tcp://{self._conf['Render']['ip']}:{self._conf['Render']['port']}")
+        self._render_socket = self._render_context.socket(zmq.PUB)
+        self._render_socket.bind(f"tcp://{self._conf['Render']['ip']}:{self._conf['Render']['port']}")
 
         # client agent
         logging.info(f"detector connecting to detector queue {self._conf['Agent']['ip']}:{self._conf['Agent']['port']}")
         self._agent_context = zmq.Context()
-        self._agent_socket = self._agent_context.socket(zmq.PUSH)
-        self._agent_socket.connect(f"tcp://{self._conf['Agent']['ip']}:{self._conf['Agent']['port']}")
+        self._agent_socket = self._agent_context.socket(zmq.PUB)
+        self._agent_socket.bind(f"tcp://{self._conf['Agent']['ip']}:{self._conf['Agent']['port']}")
 
         try:
             while True:
@@ -165,8 +165,8 @@ class Render(multiprocessing.Process):
         # server render
         logging.info(f"render binding to render queue {self._conf['Render']['ip']}:{self._conf['Render']['port']}")
         self._render_context = zmq.Context()
-        self._render_socket = self._render_context.socket(zmq.PULL)
-        self._render_socket.bind(f"tcp://{self._conf['Render']['ip']}:{self._conf['Render']['port']}")
+        self._render_socket = self._render_context.socket(zmq.SUB)
+        self._render_socket.connect(f"tcp://{self._conf['Render']['ip']}:{self._conf['Render']['port']}")
 
         try:
             while True:

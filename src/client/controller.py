@@ -19,8 +19,8 @@ class Camera(multiprocessing.Process):
         # client camera
         logging.info(f"camera connection to detector queue {self._conf['Detector']['ip']}:{self._conf['Detector']['port']}")
         self._detector_context = zmq.Context()
-        self._detector_socket = self._detector_context.socket(zmq.PUSH)
-        self._detector_socket.connect(f"tcp://{self._conf['Detector']['ip']}:{self._conf['Detector']['port']}")
+        self._detector_socket = self._detector_context.socket(zmq.PUB)
+        self._detector_socket.bind(f"tcp://{self._conf['Detector']['ip']}:{self._conf['Detector']['port']}")
 
         try:
             while True:
@@ -60,7 +60,7 @@ class Controller(ABC, multiprocessing.Process):
         # server controller
         logging.info(f"controller binding to controller queue {self._conf['Controller']['ip']}:{self._conf['Controller']['port']}")
         self._controller_context = zmq.Context()
-        self._controller_socket = self._controller_context.socket(zmq.PULL)
+        self._controller_socket = self._controller_context.socket(zmq.SUB)
         self._controller_socket.connect(f"tcp://{self._conf['Controller']['ip']}:{self._conf['Controller']['port']}")
 
         try:

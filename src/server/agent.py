@@ -48,13 +48,13 @@ class Agent(ABC, multiprocessing.Process):
         # server agent
         logging.info(f"agent binding to agent queue {self._conf['Agent']['ip']}:{self._conf['Agent']['port']}")
         self._agent_context = zmq.Context()
-        self._agent_socket = self._agent_context.socket(zmq.PULL)
-        self._agent_socket.bind(f"tcp://{self._conf['Agent']['ip']}:{self._conf['Agent']['port']}")
+        self._agent_socket = self._agent_context.socket(zmq.SUB)
+        self._agent_socket.connect(f"tcp://{self._conf['Agent']['ip']}:{self._conf['Agent']['port']}")
 
         # client controller
         logging.info(f"agent connecting to controller queue {self._conf['Controller']['ip']}:{self._conf['Controller']['port']}")
         self._controller_context = zmq.Context()
-        self._controller_socket = self._controller_context.socket(zmq.PUSH)
+        self._controller_socket = self._controller_context.socket(zmq.PUB)
         self._controller_socket.bind(f"tcp://{self._conf['Controller']['ip']}:{self._conf['Controller']['port']}")
 
         try:
@@ -175,8 +175,7 @@ class ReplayBuffer(object):
         return states, actions, rewards, new_states, terminal
 
 
-class CriticNetwork(
-    nn.Module):  # nn.Module give access to important methods, e.g. train, eval and parameters for updating the weights of the neural network.
+class CriticNetwork(nn.Module):  # nn.Module give access to important methods, e.g. train, eval and parameters for updating the weights of the neural network.
     def __init__(self, beta, input_dims, fc1_dims, fc2_dims, n_actions, name, chkpt_dir='tmp/ddpg'):
         super(CriticNetwork, self).__init__()
         self.input_dims = input_dims

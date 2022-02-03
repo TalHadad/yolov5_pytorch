@@ -2,554 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b1dffc33-6347-4478-a45a-a36dcda74287" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/configuration/conf.ini" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/documentation/install_pytorch_pc_and_pi.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/documentation/setup_raspi.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/documentation/setup_server_pc.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/documentation/yolov5_detections_class.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/old_files/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/old_files/client/cam_video.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/old_files/client/client.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/old_files/client/client_handler.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/old_files/client/client_pc.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/old_files/client/client_raspi.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/old_files/client/client_raspi_2.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/old_files/client/client_simple.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/old_files/client/client_simple_raspi.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/old_files/deep_deterministic_policy_gradient.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/old_files/display_conv_pytorch.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/old_files/main_ddpg.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/old_files/raspi_controller.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/old_files/raspi_run_commands.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/old_files/reinforcement_realtime_env_single_proc_no_zmp/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/old_files/reinforcement_realtime_env_single_proc_no_zmp/agent.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/old_files/reinforcement_realtime_env_single_proc_no_zmp/client.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/old_files/reinforcement_realtime_env_single_proc_no_zmp/comunication.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/old_files/reinforcement_realtime_env_single_proc_no_zmp/controller.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/old_files/reinforcement_realtime_env_single_proc_no_zmp/controller_raspi.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/old_files/reinforcement_realtime_env_single_proc_no_zmp/detector.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/old_files/reinforcement_realtime_env_single_proc_no_zmp/main_ddpg.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/old_files/reinforcement_realtime_env_single_proc_no_zmp/reinforcement_realtime_env.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/old_files/reinforcement_realtime_env_single_proc_no_zmp/server.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/old_files/reinforcement_realtime_env_single_proc_no_zmp/tmp/ddpg _10x10_grid_perfect_agent/Actor_ddpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/old_files/reinforcement_realtime_env_single_proc_no_zmp/tmp/ddpg _10x10_grid_perfect_agent/Critic_ddpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/old_files/reinforcement_realtime_env_single_proc_no_zmp/tmp/ddpg _10x10_grid_perfect_agent/TargetActor_ddpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/old_files/reinforcement_realtime_env_single_proc_no_zmp/tmp/ddpg _10x10_grid_perfect_agent/TargetCritic_ddpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/old_files/reinforcement_realtime_env_single_proc_no_zmp/tmp/ddpg/Actor_ddpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/old_files/reinforcement_realtime_env_single_proc_no_zmp/tmp/ddpg/Critic_ddpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/old_files/reinforcement_realtime_env_single_proc_no_zmp/tmp/ddpg/TargetActor_ddpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/old_files/reinforcement_realtime_env_single_proc_no_zmp/tmp/ddpg/TargetCritic_ddpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/old_files/reinforcement_realtime_env_single_proc_no_zmp/tmp/ddpg_after_training/Actor_ddpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/old_files/reinforcement_realtime_env_single_proc_no_zmp/tmp/ddpg_after_training/Critic_ddpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/old_files/reinforcement_realtime_env_single_proc_no_zmp/tmp/ddpg_after_training/TargetActor_ddpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/old_files/reinforcement_realtime_env_single_proc_no_zmp/tmp/ddpg_after_training/TargetCritic_ddpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/old_files/reinforcement_realtime_env_single_proc_no_zmp/tmp/ddpg_converged_to_not_move/Actor_ddpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/old_files/reinforcement_realtime_env_single_proc_no_zmp/tmp/ddpg_converged_to_not_move/Critic_ddpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/old_files/reinforcement_realtime_env_single_proc_no_zmp/tmp/ddpg_converged_to_not_move/TargetActor_ddpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/old_files/reinforcement_realtime_env_single_proc_no_zmp/tmp/ddpg_converged_to_not_move/TargetCritic_ddpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/old_files/reinforcement_realtime_env_single_proc_no_zmp/yolov5s.pt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/old_files/server/detector.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/old_files/server/server.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/old_files/server/server_handler.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/old_files/server/server_pc.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/old_files/server/server_raspi.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/old_files/server/server_simple.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/old_files/torch_lunar_lander.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/old_files/video_car_controller.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/old_files/yolov5_pretrain.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/LunarLanderContinuous.ipynb" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/gym_framework.ipynb" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/model_playground.ipynb" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/pytorch_notes/0_Introduction.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/pytorch_notes/1_tensors_and_gradients.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/pytorch_notes/2_fundamentals_of_pytorch_with_linear_regression.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/pytorch_notes/3_logistic_and_softmax_regression.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/pytorch_notes/4_feedforward_neural_network.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/pytorch_notes/5_deep_networks.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/pytorch_notes/6_introduction_to_networks_for_computer_vision.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/pytorch_notes/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/pytorch_notes/full_notes.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/tmp/ddpg/Actor_ddpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/tmp/ddpg/Critic_ddpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/tmp/ddpg/TargetActor_ddpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/tmp/ddpg/TargetCritic_ddpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/tmp/ddpg_10000_games/Actor_ddpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/tmp/ddpg_10000_games/Critic_ddpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/tmp/ddpg_10000_games/TargetActor_ddpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/resources/tmp/ddpg_10000_games/TargetCritic_ddpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/client/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/client/client.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/client/controller.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/client/controller_raspi.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/agent.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/detector.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/server_multiprocess.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/tmp/ddpg _10x10_grid_perfect_agent/Actor_ddpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/tmp/ddpg _10x10_grid_perfect_agent/Critic_ddpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/tmp/ddpg _10x10_grid_perfect_agent/TargetActor_ddpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/tmp/ddpg _10x10_grid_perfect_agent/TargetCritic_ddpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/tmp/ddpg/Actor_ddpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/tmp/ddpg/Critic_ddpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/tmp/ddpg/TargetActor_ddpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/tmp/ddpg/TargetCritic_ddpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/tmp/ddpg_after_training/Actor_ddpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/tmp/ddpg_after_training/Critic_ddpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/tmp/ddpg_after_training/TargetActor_ddpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/tmp/ddpg_after_training/TargetCritic_ddpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/tmp/ddpg_converged_to_not_move/Actor_ddpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/tmp/ddpg_converged_to_not_move/Critic_ddpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/tmp/ddpg_converged_to_not_move/TargetActor_ddpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/tmp/ddpg_converged_to_not_move/TargetCritic_ddpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/server/yolov5s.pt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/utils_2/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/utils_2/comunication.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/utils_2/config_parser.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/utils_2/logging_level.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data.pkl" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/0" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/10" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/100" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/101" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/102" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/103" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/104" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/105" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/106" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/107" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/108" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/109" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/11" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/110" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/111" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/112" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/113" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/114" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/115" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/116" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/117" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/118" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/119" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/12" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/120" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/121" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/122" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/123" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/124" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/125" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/126" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/127" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/128" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/129" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/13" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/130" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/131" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/132" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/133" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/134" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/135" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/136" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/137" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/138" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/139" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/14" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/140" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/141" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/142" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/143" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/144" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/145" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/146" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/147" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/148" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/149" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/15" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/150" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/151" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/152" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/153" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/154" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/155" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/156" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/157" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/158" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/159" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/16" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/160" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/161" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/162" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/163" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/164" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/165" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/166" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/167" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/168" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/169" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/17" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/170" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/171" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/172" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/173" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/174" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/175" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/176" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/177" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/178" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/179" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/18" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/180" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/181" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/182" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/183" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/184" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/185" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/186" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/187" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/188" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/189" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/19" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/190" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/191" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/192" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/193" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/194" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/195" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/196" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/197" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/198" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/199" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/20" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/200" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/201" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/202" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/203" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/204" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/205" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/206" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/207" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/208" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/209" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/21" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/210" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/211" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/212" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/213" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/214" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/215" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/216" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/217" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/218" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/219" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/22" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/220" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/221" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/222" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/223" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/224" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/225" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/226" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/227" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/228" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/229" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/23" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/230" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/231" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/232" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/233" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/234" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/235" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/236" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/237" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/238" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/239" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/24" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/240" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/241" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/242" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/243" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/244" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/245" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/246" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/247" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/248" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/249" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/25" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/250" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/251" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/252" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/253" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/254" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/255" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/256" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/257" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/258" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/259" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/26" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/260" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/261" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/262" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/263" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/264" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/265" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/266" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/267" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/268" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/269" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/27" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/270" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/271" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/272" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/273" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/274" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/275" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/276" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/277" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/278" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/279" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/28" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/280" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/281" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/282" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/283" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/284" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/285" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/286" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/287" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/288" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/289" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/29" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/290" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/291" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/292" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/293" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/294" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/295" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/296" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/297" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/298" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/299" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/3" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/30" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/300" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/301" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/302" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/303" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/304" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/305" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/306" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/307" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/308" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/309" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/31" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/310" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/311" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/312" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/313" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/314" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/315" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/316" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/317" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/318" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/319" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/32" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/320" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/321" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/322" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/323" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/324" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/325" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/326" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/327" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/328" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/329" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/33" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/330" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/331" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/332" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/333" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/334" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/335" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/336" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/337" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/338" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/339" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/34" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/340" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/341" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/342" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/343" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/344" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/345" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/346" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/347" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/348" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/349" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/35" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/350" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/351" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/352" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/353" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/354" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/36" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/37" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/38" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/39" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/4" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/40" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/41" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/42" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/43" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/44" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/45" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/46" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/47" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/48" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/49" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/5" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/50" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/51" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/52" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/53" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/54" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/55" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/56" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/57" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/58" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/59" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/6" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/60" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/61" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/62" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/63" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/64" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/65" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/66" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/67" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/68" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/69" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/7" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/70" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/71" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/72" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/73" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/74" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/75" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/76" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/77" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/78" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/79" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/8" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/80" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/81" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/82" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/83" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/84" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/85" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/86" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/87" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/88" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/89" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/9" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/90" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/91" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/92" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/93" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/94" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/95" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/96" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/97" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/98" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/data/99" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/yolov5s/archive/version" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/yolov5_pytorch.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/yolov5_pytorch.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LunarLanderContinuous.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/cam_video.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/client.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/client_handler.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/client_pc.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/client_raspi.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/client_raspi_2.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/client_simple.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/client/client_simple_raspi.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/deep_deterministic_policy_gradient.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/display_conv_pytorch.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gym_framework.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/gym_mouse_lib/gym_mouse/envs/mouse_env.py" beforeDir="false" afterPath="$PROJECT_DIR$/gym_mouse_lib/gym_mouse/envs/mouse_env.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_ddpg.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/model_playground.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notes.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/plots/LunarLander_alpha_0.0001_beta_0.001_10_games.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/plots/Mouse_alpha_0.0001_beta_0.001_10000_games time_2022-01-19 15:02:41.096738.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/plots/Mouse_alpha_0.0001_beta_0.001_100_games time_2022-01-19 14:49:43.563947.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/plots/Mouse_alpha_0.0001_beta_0.001_100_games time_2022-01-19 14:50:20.928008.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/plots/Mouse_alpha_0.0001_beta_0.001_100_games time_2022-01-19 14:51:16.654993.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/plots/Mouse_alpha_0.0001_beta_0.001_100_games time_2022-01-19 14:54:23.189817.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/plots/Mouse_alpha_0.0001_beta_0.001_100_games time_2022-01-19 14:54:30.907492.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/plots/Mouse_alpha_0.0001_beta_0.001_100_games time_2022-01-19 14:54:38.182686.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/plots/Mouse_alpha_0.0001_beta_0.001_100_games time_2022-01-19 14:57:12.240372.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/plots/Mouse_alpha_0.0001_beta_0.001_100_games time_2022-01-19 14:57:50.089685.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/plots/Mouse_alpha_0.0001_beta_0.001_100_games.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pytorch_notes/0_Introduction.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pytorch_notes/1_tensors_and_gradients.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pytorch_notes/2_fundamentals_of_pytorch_with_linear_regression.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pytorch_notes/3_logistic_and_softmax_regression.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pytorch_notes/4_feedforward_neural_network.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pytorch_notes/5_deep_networks.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pytorch_notes/6_introduction_to_networks_for_computer_vision.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pytorch_notes/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pytorch_notes/full_notes.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/raspi_controller.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/raspi_run_commands.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/reinforcement_realtime_env/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/reinforcement_realtime_env/agent.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/reinforcement_realtime_env/client.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/reinforcement_realtime_env/comunication.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/reinforcement_realtime_env/controller.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/reinforcement_realtime_env/controller_raspi.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/reinforcement_realtime_env/detector.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/reinforcement_realtime_env/main_ddpg.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/reinforcement_realtime_env/reinforcement_realtime_env.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/reinforcement_realtime_env/server.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/reinforcement_realtime_env/tmp/ddpg/Actor_ddpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/reinforcement_realtime_env/tmp/ddpg/Critic_ddpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/reinforcement_realtime_env/tmp/ddpg/TargetActor_ddpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/reinforcement_realtime_env/tmp/ddpg/TargetCritic_ddpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/runs/detect/exp/zidane.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/runs/detect/exp10/zidane.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/runs/detect/exp2/zidane.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/runs/detect/exp3/zidane.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/runs/detect/exp4/zidane.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/runs/detect/exp5/zidane.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/runs/detect/exp6/zidane.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/runs/detect/exp7/zidane.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/runs/detect/exp8/zidane.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/runs/detect/exp9/zidane.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/detector.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/server.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/server_handler.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/server_pc.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/server_raspi.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/server_simple.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/setup.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/setup_raspi.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tmp/ddpg/Actor_ddpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tmp/ddpg/Critic_ddpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tmp/ddpg/TargetActor_ddpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tmp/ddpg/TargetCritic_ddpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tmp/ddpg_10000_games/Actor_ddpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tmp/ddpg_10000_games/Critic_ddpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tmp/ddpg_10000_games/TargetActor_ddpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/tmp/ddpg_10000_games/TargetCritic_ddpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/torch_lunar_lander.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/video_car_controller.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/yolov5_pretrain.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/yolov5s.pt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/client/controller.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/client/controller.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/server/agent.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/agent.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/server/detector.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/server/detector.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -571,10 +29,10 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../app_server_home" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PythonContentEntriesConfigurable" />
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Python.server_multiprocess">
     <configuration name="client" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="yolov5_pytorch" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -597,8 +55,31 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="server_multiprocess" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="yolov5_pytorch" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src/server" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/server/server_multiprocess.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.server_multiprocess" />
         <item itemvalue="Python.client" />
       </list>
     </recent_temporary>
@@ -612,6 +93,11 @@
       <option name="presentableId" value="Default" />
       <updated>1643810970058</updated>
       <workItem from="1643810971421" duration="1785000" />
+      <workItem from="1643839258958" duration="976000" />
+      <workItem from="1643840256306" duration="62000" />
+      <workItem from="1643840383593" duration="4152000" />
+      <workItem from="1643873576994" duration="7276000" />
+      <workItem from="1643901104304" duration="1050000" />
     </task>
     <servers />
   </component>
@@ -622,19 +108,20 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/src/utils_2/comunication.py</url>
-          <line>14</line>
-          <option name="timeStamp" value="4" />
+          <url>file://$PROJECT_DIR$/src/server/detector.py</url>
+          <line>234</line>
+          <option name="timeStamp" value="6" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/src/utils_2/comunication.py</url>
-          <line>7</line>
-          <option name="timeStamp" value="5" />
+          <url>file://$PROJECT_DIR$/src/server/detector.py</url>
+          <line>233</line>
+          <option name="timeStamp" value="7" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/yolov5_pytorch$client.coverage" NAME="client Coverage Results" MODIFIED="1643812482828" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/client" />
+    <SUITE FILE_PATH="coverage/yolov5_pytorch$client.coverage" NAME="client Coverage Results" MODIFIED="1643873225902" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/client" />
+    <SUITE FILE_PATH="coverage/yolov5_pytorch$server_multiprocess.coverage" NAME="server_multiprocess Coverage Results" MODIFIED="1643884124091" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src/server" />
   </component>
 </project>
