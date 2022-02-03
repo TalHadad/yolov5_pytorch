@@ -61,7 +61,7 @@ class Controller(ABC, multiprocessing.Process):
         logging.info(f"controller binding to controller queue {self._conf['Controller']['ip']}:{self._conf['Controller']['port']}")
         self._controller_context = zmq.Context()
         self._controller_socket = self._controller_context.socket(zmq.PULL)
-        self._controller_socket.bind(f"tcp://{self._conf['Controller']['ip']}:{self._conf['Controller']['port']}")
+        self._controller_socket.connect(f"tcp://{self._conf['Controller']['ip']}:{self._conf['Controller']['port']}")
 
         try:
             while True:

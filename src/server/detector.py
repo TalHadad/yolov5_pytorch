@@ -107,13 +107,9 @@ class Detector_Yolov5(Detector):
     def get_location(self, image) -> list:
         start = time.time()
 
-        logging.info(f'image')
         self.image = image
-        logging.info(f'results')
         self.results = self._model(image)
-        logging.info(f'mid_cords')
         self.mid_cords = self._get_target_mid_cords(self.results)
-        logging.info(f'norm_mid_cords')
         norm_mid_cords = self._norm_to_nxn_grid(10, self.mid_cords, self.image)
 
         self._print_time(start)

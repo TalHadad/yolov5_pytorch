@@ -55,7 +55,7 @@ class Agent(ABC, multiprocessing.Process):
         logging.info(f"agent connecting to controller queue {self._conf['Controller']['ip']}:{self._conf['Controller']['port']}")
         self._controller_context = zmq.Context()
         self._controller_socket = self._controller_context.socket(zmq.PUSH)
-        self._controller_socket.connect(f"tcp://{self._conf['Controller']['ip']}:{self._conf['Controller']['port']}")
+        self._controller_socket.bind(f"tcp://{self._conf['Controller']['ip']}:{self._conf['Controller']['port']}")
 
         try:
             while True:
@@ -65,6 +65,7 @@ class Agent(ABC, multiprocessing.Process):
 
                 logging.info(f'agent choosing action')
                 action = self.choose_action(location)
+                logging.info(f'agent choose action: {action}')
 
                 logging.info(f'agent sending action to controller')
                 send(self._controller_socket, action)
