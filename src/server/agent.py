@@ -48,13 +48,13 @@ class Agent(ABC, multiprocessing.Process):
         # server agent
         logging.info(f"agent binding to agent queue {self._conf['Agent']['ip']}:{self._conf['Agent']['port']}")
         self._agent_context = zmq.Context()
-        self._agent_socket = self._agent_context.socket(zmq.REP)
+        self._agent_socket = self._agent_context.socket(zmq.PULL)
         self._agent_socket.bind(f"tcp://{self._conf['Agent']['ip']}:{self._conf['Agent']['port']}")
 
         # client controller
         logging.info(f"agent connecting to controller queue {self._conf['Controller']['ip']}:{self._conf['Controller']['port']}")
         self._controller_context = zmq.Context()
-        self._controller_socket = self._controller_context.socket(zmq.REQ)
+        self._controller_socket = self._controller_context.socket(zmq.PUSH)
         self._controller_socket.connect(f"tcp://{self._conf['Controller']['ip']}:{self._conf['Controller']['port']}")
 
         try:

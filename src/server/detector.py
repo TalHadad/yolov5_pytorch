@@ -29,18 +29,18 @@ class Detector(multiprocessing.Process, ABC):
         # server detector
         logging.info(f"detector binding to detector queue {self._conf['Detector']['ip']}:{self._conf['Detector']['port']}")
         self._detector_context = zmq.Context()
-        self._detector_socket = self._detector_context.socket(zmq.REP)
+        self._detector_socket = self._detector_context.socket(zmq.PULL)
         self._detector_socket.bind(f"tcp://{self._conf['Detector']['ip']}:{self._conf['Detector']['port']}")
         # client render
         logging.info(f"detector connecting to render queue {self._conf['Render']['ip']}:{self._conf['Render']['port']}")
         self._render_context = zmq.Context()
-        self._render_socket = self._render_context.socket(zmq.REQ)
+        self._render_socket = self._render_context.socket(zmq.PUSH)
         self._render_socket.connect(f"tcp://{self._conf['Render']['ip']}:{self._conf['Render']['port']}")
 
         # client agent
         logging.info(f"detector connecting to detector queue {self._conf['Agent']['ip']}:{self._conf['Agent']['port']}")
         self._agent_context = zmq.Context()
-        self._agent_socket = self._agent_context.socket(zmq.REQ)
+        self._agent_socket = self._agent_context.socket(zmq.PUSH)
         self._agent_socket.connect(f"tcp://{self._conf['Agent']['ip']}:{self._conf['Agent']['port']}")
 
         try:
@@ -52,10 +52,10 @@ class Detector(multiprocessing.Process, ABC):
                 location, results, image = self.get_location(image)
 
                 logging.info(f'detector sending location to agent')
-                send(self._agent_socket.send, location)
+                send(self._agent_socket, location)
 
                 logging.info(f'detector sending results and image to render')
-                send(self._render_socket.send, (results, image))
+                send(self._render_socket, (results, image))
 
         except Exception as e:
             logging.warning(f'detector exitting clean, exception {e}')
@@ -107,9 +107,13 @@ class Detector_Yolov5(Detector):
     def get_location(self, image) -> list:
         start = time.time()
 
+        logging.info(f'image')
         self.image = image
+        logging.info(f'results')
         self.results = self._model(image)
+        logging.info(f'mid_cords')
         self.mid_cords = self._get_target_mid_cords(self.results)
+        logging.info(f'norm_mid_cords')
         norm_mid_cords = self._norm_to_nxn_grid(10, self.mid_cords, self.image)
 
         self._print_time(start)
@@ -165,7 +169,7 @@ class Render(multiprocessing.Process):
         # server render
         logging.info(f"render binding to render queue {self._conf['Render']['ip']}:{self._conf['Render']['port']}")
         self._render_context = zmq.Context()
-        self._render_socket = self._render_context.socket(zmq.REP)
+        self._render_socket = self._render_context.socket(zmq.PULL)
         self._render_socket.bind(f"tcp://{self._conf['Render']['ip']}:{self._conf['Render']['port']}")
 
         try:
@@ -174,7 +178,7 @@ class Render(multiprocessing.Process):
                 result, image = receive(self._render_socket)
 
                 logging.info(f'render rendeting labeled image')
-                self.render(image)
+                self.render(result, image)
 
         except Exception as e:
             logging.warning(f'render exitting clean, exception {e}')
@@ -232,6 +236,5 @@ class Render(multiprocessing.Process):
             bgr = (0, 255, 0)  # color of the box
             label_font = cv2.FONT_HERSHEY_SIMPLEX  # Font for the label.
             cv2.rectangle(image, (x1, y1), (x2, y2), bgr, 2)  # Plot the boxes
-            cv2.putText(image, self._classes[int(labels[i])], (x1, y1), label_font, 0.9, bgr,
-                        2)  # Put a label over box.
+            cv2.putText(image, self._classes[int(labels[i])], (x1, y1), label_font, 0.9, bgr, 2)  # Put a label over box.
             return image
