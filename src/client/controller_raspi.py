@@ -1,7 +1,7 @@
 # controller_raspi.py
 import logging
 import time
-from controller import Controller
+from .controller import Controller
 from utils_2.logging_level import LOGGING_LEVEL
 logging.basicConfig(level=logging.DEBUG)#LOGGING_LEVEL)
 log = logging.getLogger('controller_raspi')
@@ -10,13 +10,13 @@ log.setLevel(LOGGING_LEVEL)
 import RPi.GPIO as GPIO
 GPIO.setmode(GPIO.BOARD)
 
-class Controller_RPi(Controller):
+class ControllerRPi(Controller):
     '''
     Raspberry pi controller of pwms and camera
     '''
 
     def __init__(self, conf):
-        super(Controller_RPi, self).__init__(conf=conf)
+        super(ControllerRPi, self).__init__(conf=conf)
         self.pins = {'forward': 11, # 11 = backward (white)
                      'backward': 12, # 12 = forward (purple)
                      'right': 13, # 13 = right (green)
