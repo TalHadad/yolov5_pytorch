@@ -7,7 +7,7 @@ import multiprocessing
 import zmq
 import traceback
 import torch
-from utils_2.comunication import receive, send
+from utils_2.comunication import receive, send, RenderMsg
 from utils_2.config_parser import ConfigReader
 
 logging.basicConfig(level=LOGGING_LEVEL)
@@ -57,7 +57,8 @@ class Detector(multiprocessing.Process, ABC):
                 send(self._agent_socket, location)
 
                 logging.info(f'detector sending results and image to render')
-                send(self._render_socket, (results, image))
+                render_msg = RenderMsg(results, image)
+                send(self._render_socket, render_msg)#[results, image])
 
                 logging.info(f'detector sending ack to camera')
                 send(self._detector_socket, 'ack')

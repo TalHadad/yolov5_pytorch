@@ -32,10 +32,12 @@ class Render(multiprocessing.Process):
             while iter < MAX_ITER:
                 iter += 1
                 logging.info(f'render getting results and image')
-                result, image = receive(self._render_socket)
+                self.render_msg = receive(self._render_socket)
+                print(f'{self.render_msg}')
+                results, image = self.render_msg.results, self.render_msg.image
 
                 logging.info(f'render rendeting labeled image')
-                self.render(result, image)
+                self.render(results, image)
 
         except Exception as e:
             logging.warning(f'render exitting clean, exception {e}')
