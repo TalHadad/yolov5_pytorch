@@ -1,4 +1,4 @@
-from client.controller_raspi import main
+from client.controller_raspi import test_pwms_simple
 
 if __name__ == "__main__":
-    main()
+    test_pwms_simple()

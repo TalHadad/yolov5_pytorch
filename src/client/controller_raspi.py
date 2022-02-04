@@ -187,19 +187,21 @@ class ControllerRPi(object):
         logging.warning(f'controller exitting clean')
         self.exit_clean()
 
-    def test_pwms_simple(self) -> None:
-        pwm_frequency = 100
-        pwm_duty_cycle = 100
-        GPIO.setup(12, GPIO.OUT)
-        pwm = GPIO.PWM(12, pwm_frequency)
-        pwm.start(pwm_duty_cycle)
-        time.sleep(2)
-        pwm.stop()
-        GPIO.cleanup()
+
 
 
 def main():
     conf = ConfigReader().get_params()
     controller = ControllerRPi(conf=conf)
     #controller.run()
-    controller.test_pwms_simple()
+    controller.test_pwms()
+
+def test_pwms_simple(self) -> None:
+    pwm_frequency = 100
+    pwm_duty_cycle = 100
+    GPIO.setup(12, GPIO.OUT)
+    pwm = GPIO.PWM(12, pwm_frequency)
+    pwm.start(pwm_duty_cycle)
+    time.sleep(2)
+    pwm.stop()
+    GPIO.cleanup()
