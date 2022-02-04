@@ -72,7 +72,7 @@ class Agent(ABC, multiprocessing.Process):
                 logging.info(f'agent choose action: {action}')
 
                 logging.info(f'agent sending action to controller')
-                self._controller_socket.send(action)
+                self._controller_socket.send(action, flags=0)
 
         except Exception as e:
             logging.warning(f'agent exitting clean, exception {e}')
