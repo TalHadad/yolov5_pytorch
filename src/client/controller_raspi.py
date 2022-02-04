@@ -196,7 +196,7 @@ def main():
     #controller.run()
     controller.test_pwms()
 
-def test_pwms_simple(self) -> None:
+def test_pwms_simple() -> None:
     pwm_frequency = 100
     pwm_duty_cycle = 100
     GPIO.setup(12, GPIO.OUT)
