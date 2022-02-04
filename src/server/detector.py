@@ -7,7 +7,7 @@ import multiprocessing
 import zmq
 import traceback
 import torch
-from utils_2.comunication import receive, send, RenderMsg
+from utils_2.comunication import receive, send
 from utils_2.config_parser import ConfigReader
 
 logging.basicConfig(level=LOGGING_LEVEL)
@@ -31,11 +31,11 @@ class Detector(multiprocessing.Process, ABC):
         self._detector_socket = self._detector_context.socket(zmq.REP)
         self._detector_socket.bind(f"tcp://{self._conf['Detector']['ip']}:{self._conf['Detector']['port']}")
 
-        # client render
-        logging.info(f"detector PUB connecting to render queue {self._conf['Render']['ip']}:{self._conf['Render']['port']}")
-        self._render_context = zmq.Context()
-        self._render_socket = self._render_context.socket(zmq.PUB)
-        self._render_socket.connect(f"tcp://{self._conf['Render']['ip']}:{self._conf['Render']['port']}")
+        # # client render
+        # logging.info(f"detector PUB connecting to render queue {self._conf['Render']['ip']}:{self._conf['Render']['port']}")
+        # self._render_context = zmq.Context()
+        # self._render_socket = self._render_context.socket(zmq.PUB)
+        # self._render_socket.connect(f"tcp://{self._conf['Render']['ip']}:{self._conf['Render']['port']}")
 
         # client agent
         logging.info(f"detector PUB connecting to detector queue {self._conf['Agent']['ip']}:{self._conf['Agent']['port']}")
@@ -56,9 +56,9 @@ class Detector(multiprocessing.Process, ABC):
                 logging.info(f'detector sending location {location} to agent')
                 send(self._agent_socket, location)
 
-                logging.info(f'detector sending results and image to render')
-                send(self._render_socket, results)
-                send(self._render_socket, image)
+                # logging.info(f'detector sending results and image to render')
+                # send(self._render_socket, results)
+                # send(self._render_socket, image)
 
                 logging.info(f'detector sending ack to camera')
                 send(self._detector_socket, 'ack')
