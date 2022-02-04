@@ -72,7 +72,7 @@ class Agent(ABC, multiprocessing.Process):
                 logging.info(f'agent choose action: {action}')
 
                 logging.info(f'agent sending action to controller')
-                self._controller_socket.send(action, flags=0)
+                self._controller_socket.send(bytes(action), flags=0)
 
         except Exception as e:
             logging.warning(f'agent exitting clean, exception {e}')
@@ -527,7 +527,7 @@ class AgentDDPG(Agent):
         self.noise.reset()
 
     def exit_clean(self):
-        super.exit_clean()
+        super().exit_clean()
         self.env.exit_clean()
 
     def remember(self, state, action, reward, new_state, done):

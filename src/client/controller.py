@@ -32,7 +32,7 @@ class Controller(ABC, multiprocessing.Process):
                 logging.info(f'controller getting action')
                 action = int(self._controller_socket.recv(copy=False, flags=0))
 
-                logging.info(f'controller doning action')
+                logging.info(f'controller doning action {action}')
                 self.do_action(action)
 
         except Exception as e:
