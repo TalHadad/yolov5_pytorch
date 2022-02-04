@@ -50,7 +50,7 @@ class Controller(ABC, multiprocessing.Process):
 
     def exit_clean(self):
         self._controller_context.destroy()
-        self.terminate()
+        #self.terminate()
 
 
 class ControllerSimple(Controller):

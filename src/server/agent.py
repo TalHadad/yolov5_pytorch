@@ -61,6 +61,7 @@ class Agent(ABC, multiprocessing.Process):
         self._controller_socket.bind(f"tcp://{self._conf['Controller']['ip']}:{self._conf['Controller']['port']}")
 
         try:
+            self.load_models()
             iter = 0
             while iter < MAX_ITER:
                 iter += 1
@@ -90,7 +91,7 @@ class Agent(ABC, multiprocessing.Process):
     def exit_clean(self):
         self._agent_context.destroy()
         self._controller_context.destroy()
-        self.terminate()
+        #self.terminate()
 
     @abstractmethod
     def load_models(self):

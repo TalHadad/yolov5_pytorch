@@ -82,9 +82,9 @@ class Detector(multiprocessing.Process, ABC):
 
     def exit_clean(self):
         self._detector_context.destroy()
-        self._render_context.destroy()
+        #self._render_context.destroy()
         self._agent_context.destroy()
-        self.terminate()
+        #self.terminate()
 
 
 class Detector_Yolov5(Detector):

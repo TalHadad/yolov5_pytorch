@@ -49,7 +49,7 @@ class Render(multiprocessing.Process):
 
     def exit_clean(self) -> None:
         self._render_context.destroy()
-        self.terminate()
+        #self.terminate()
 
     def render(self, results, image) -> None:
         labeled_img = self._get_labeled_image(results, image)

@@ -51,7 +51,7 @@ class Camera(multiprocessing.Process):
 
     def exit_clean(self):
         self._detector_context.destroy()
-        self.terminate()
+        #self.terminate()
 
     def get_image(self):
         cap = cv2.VideoCapture(0)
