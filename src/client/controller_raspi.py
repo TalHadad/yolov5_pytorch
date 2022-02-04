@@ -1,7 +1,7 @@
 # controller_raspi.py
 import logging
 import time
-from controller import Controller
+from .controller import Controller
 from utils_2.logging_level import LOGGING_LEVEL, MAX_ITER
 import RPi.GPIO as GPIO
 
