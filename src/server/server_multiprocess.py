@@ -17,8 +17,7 @@ log.setLevel(LOGGING_LEVEL)
 if __name__ == '__main__':
     conf = ConfigReader().get_params()
 
-    target = 'person'
-    detector = Detector_Yolov5(conf=conf, target=target)
+
 
     render = Render(conf=conf, classes=detector.get_labels())
 

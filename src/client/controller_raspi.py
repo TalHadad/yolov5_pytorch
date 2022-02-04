@@ -1,14 +1,15 @@
 # controller_raspi.py
 import logging
 import time
-from .controller import Controller
-from utils_2.logging_level import LOGGING_LEVEL
-logging.basicConfig(level=logging.DEBUG)#LOGGING_LEVEL)
+from controller import Controller
+from utils_2.logging_level import LOGGING_LEVEL, MAX_ITER
+import RPi.GPIO as GPIO
+
+GPIO.setmode(GPIO.BOARD)
+
+logging.basicConfig(level=LOGGING_LEVEL)
 log = logging.getLogger('controller_raspi')
 log.setLevel(LOGGING_LEVEL)
-
-import RPi.GPIO as GPIO
-GPIO.setmode(GPIO.BOARD)
 
 class ControllerRPi(Controller):
     '''
@@ -133,3 +134,9 @@ class ControllerRPi(Controller):
         self.pwms['backward'].start(self.pwm_duty_cycle)
     def _stop_backward(self) -> None:
         self.pwms['backward'].stop()
+
+def main():
+    from utils_2.config_parser import ConfigReader
+    conf = ConfigReader().get_params()
+    controller = ControllerRPi(conf=conf)
+    controller.run()

@@ -1,55 +1,16 @@
 # controller.py
-import time
 from abc import ABC, abstractmethod
 import multiprocessing
 import traceback
 import logging
 import zmq
-import cv2
-from utils_2.comunication import receive, send
+from utils_2.comunication import receive
+from utils_2.config_parser import ConfigReader
+from utils_2.logging_level import LOGGING_LEVEL, MAX_ITER
 
-
-class Camera(multiprocessing.Process):
-    def __init__(self, conf: dict):
-        super(Camera, self).__init__()
-        self._conf = conf
-        self.seconds = 2
-
-    def run(self):
-        # client camera
-        logging.info(f"camera connection to detector queue {self._conf['Detector']['ip']}:{self._conf['Detector']['port']}")
-        self._detector_context = zmq.Context()
-        self._detector_socket = self._detector_context.socket(zmq.PUB)
-        self._detector_socket.bind(f"tcp://{self._conf['Detector']['ip']}:{self._conf['Detector']['port']}")
-
-        try:
-            while True:
-                logging.info(f'camera taking image')
-                image = self.get_image()
-
-                logging.info(f'camera sending image')
-                send(self._detector_socket, image)
-
-                logging.info(f'camera waiting {self.seconds} seconds')
-                time.sleep(self.seconds)
-
-        except Exception as e:
-            logging.warning(f'camera exitting clean, exception {e}')
-            traceback.print_exception(type(e), e, e.__traceback__)
-            self.exit_clean()
-
-    def exit_clean(self):
-        self._detector_context.destroy()
-        self.terminate()
-
-    def get_image(self):
-        cap = cv2.VideoCapture(0)
-        ret, frame = cap.read()
-        if not ret:
-            logging.error('Could not read frame.')
-        cap.release()
-        return frame
-
+logging.basicConfig(level=LOGGING_LEVEL)
+log = logging.getLogger('controller')
+log.setLevel(LOGGING_LEVEL)
 
 class Controller(ABC, multiprocessing.Process):
     def __init__(self, conf: dict):
@@ -58,13 +19,16 @@ class Controller(ABC, multiprocessing.Process):
 
     def run(self):
         # server controller
-        logging.info(f"controller binding to controller queue {self._conf['Controller']['ip']}:{self._conf['Controller']['port']}")
+        logging.info(f"controller SUB binding to controller queue {self._conf['Controller']['ip']}:{self._conf['Controller']['port']}")
         self._controller_context = zmq.Context()
         self._controller_socket = self._controller_context.socket(zmq.SUB)
-        self._controller_socket.connect(f"tcp://{self._conf['Controller']['ip']}:{self._conf['Controller']['port']}")
+        self._controller_socket.bind(f"tcp://{self._conf['Controller']['ip']}:{self._conf['Controller']['port']}")
+        self._controller_socket.subscribe("")
 
         try:
-            while True:
+            iter = 0
+            while iter < MAX_ITER:
+                iter += 1
                 logging.info(f'controller getting action')
                 action = int(receive(self._controller_socket))
 
@@ -88,3 +52,9 @@ class Controller(ABC, multiprocessing.Process):
 class ControllerSimple(Controller):
     def do_action(self, action):
         pass
+
+
+def main():
+    conf = ConfigReader().get_params()
+    controller = ControllerSimple(conf=conf)
+    controller.run()

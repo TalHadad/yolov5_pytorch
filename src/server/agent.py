@@ -20,10 +20,6 @@
 
 from abc import ABC, abstractmethod
 import logging
-from utils_2.logging_level import LOGGING_LEVEL
-logging.basicConfig(level=LOGGING_LEVEL)
-log = logging.getLogger('agent')
-log.setLevel(LOGGING_LEVEL)
 import os
 import zmq
 import multiprocessing
@@ -36,6 +32,12 @@ import numpy as np
 import matplotlib.pyplot as plt
 import datetime
 from utils_2.comunication import receive, send
+from utils_2.config_parser import ConfigReader
+from utils_2.logging_level import LOGGING_LEVEL, MAX_ITER
+
+logging.basicConfig(level=LOGGING_LEVEL)
+log = logging.getLogger('agent')
+log.setLevel(LOGGING_LEVEL)
 
 
 class Agent(ABC, multiprocessing.Process):
@@ -46,20 +48,23 @@ class Agent(ABC, multiprocessing.Process):
 
     def run(self):
         # server agent
-        logging.info(f"agent binding to agent queue {self._conf['Agent']['ip']}:{self._conf['Agent']['port']}")
+        logging.info(f"agent SUB binding to agent queue {self._conf['Agent']['ip']}:{self._conf['Agent']['port']}")
         self._agent_context = zmq.Context()
         self._agent_socket = self._agent_context.socket(zmq.SUB)
-        self._agent_socket.connect(f"tcp://{self._conf['Agent']['ip']}:{self._conf['Agent']['port']}")
+        self._agent_socket.bind(f"tcp://{self._conf['Agent']['ip']}:{self._conf['Agent']['port']}")
+        self._agent_socket.subscribe("")
 
         # client controller
-        logging.info(f"agent connecting to controller queue {self._conf['Controller']['ip']}:{self._conf['Controller']['port']}")
+        logging.info(
+            f"agent connecting to controller queue {self._conf['Controller']['ip']}:{self._conf['Controller']['port']}")
         self._controller_context = zmq.Context()
         self._controller_socket = self._controller_context.socket(zmq.PUB)
-        self._controller_socket.bind(f"tcp://{self._conf['Controller']['ip']}:{self._conf['Controller']['port']}")
+        self._controller_socket.connect(f"tcp://{self._conf['Controller']['ip']}:{self._conf['Controller']['port']}")
 
         try:
-            while True:
-
+            iter = 0
+            while iter < MAX_ITER:
+                iter += 1
                 logging.info(f'agent getting location')
                 location = receive(self._agent_socket)
 
@@ -405,15 +410,14 @@ class AgentEnv(object):
             is_best_score = True
             log.warning(f'saving models')
         log.warning(f'{self.__class__.__name__}: '
-                     f'score {self.score}, '
-                     f'average score {avg_score}, '
-                     f'best score {self.best_score}, '
-                     f'game step counter {self.game_step_counter}')
+                    f'score {self.score}, '
+                    f'average score {avg_score}, '
+                    f'best score {self.best_score}, '
+                    f'game step counter {self.game_step_counter}')
         return is_best_score
 
     def first_step(self) -> bool:
         return self.last_state is None
-
 
 
 class AgentDDPG(Agent):
@@ -434,7 +438,8 @@ class AgentDDPG(Agent):
         self.tau = tau
         self.memory = ReplayBuffer(max_size, self.input_dims, self.n_actions)
         self.batch_size = batch_size
-        self.actor = ActorNetwork(alpha, self.input_dims, layer1_size, layer2_size, n_actions=self.n_actions, name='Actor')
+        self.actor = ActorNetwork(alpha, self.input_dims, layer1_size, layer2_size, n_actions=self.n_actions,
+                                  name='Actor')
 
         # much like the deep Q network algorithm, this uses taget networks as well as the base network,
         # so it's an off policy method.
@@ -442,7 +447,8 @@ class AgentDDPG(Agent):
         self.target_actor = ActorNetwork(alpha, self.input_dims, layer1_size, layer2_size, n_actions=self.n_actions,
                                          name='TargetActor')
 
-        self.critic = CriticNetwork(beta, self.input_dims, layer1_size, layer2_size, n_actions=self.n_actions, name='Critic')
+        self.critic = CriticNetwork(beta, self.input_dims, layer1_size, layer2_size, n_actions=self.n_actions,
+                                    name='Critic')
         self.target_critic = CriticNetwork(beta, self.input_dims, layer1_size, layer2_size, n_actions=self.n_actions,
                                            name='TargetCritic')
         # This is very similar to key learning, where you have Q eval and Q next (or Q target, whatever you want to call it).
@@ -494,13 +500,13 @@ class AgentDDPG(Agent):
         # Otherwise it will pass out a tensor, which doesn't work, beacuse you can't pass a tensor into the open ai gym.
         return mu_prime.cpu().detach().numpy()  # action probabilities, type ndarry: (7,)]
 
-
     def choose_action(self, state) -> int:
         reward = self.env.get_reward(state)
         done = self.env.is_done(state)
-        if not self.env.first_step(): # last state is not None
+        if not self.env.first_step():  # last state is not None
             # learn from previous state
-            log.info(f'not first step, learning from {self.env.last_state}, {np.argmax(self.last_action_probs)}, {reward}, {state}, {done}')
+            log.info(
+                f'not first step, learning from {self.env.last_state}, {np.argmax(self.last_action_probs)}, {reward}, {state}, {done}')
             self.remember(self.env.last_state, self.last_action_probs, reward, state, done)
             self.learn()
         if not done:
@@ -513,7 +519,6 @@ class AgentDDPG(Agent):
             log.info(f'game over! {self.env.last_state}, {self.env.last_action}, {reward}, {state}, {done}')
             self.reset_game()
         return self.env.last_action
-
 
     def reset_game(self):
         self.env.save_score()
@@ -653,3 +658,12 @@ class AgentDDPG(Agent):
         self.critic.load_checkpoint()
         self.target_actor.load_checkpoint()
         self.target_critic.load_checkpoint()
+
+
+def main():
+    conf = ConfigReader().get_params()
+    input_dims = (2,)
+    n_actions = 7
+    env = AgentEnv(input_dims, n_actions)
+    agent = AgentDDPG(conf=conf, env=env)
+    agent.run()
