@@ -22,7 +22,7 @@ class Controller(ABC, multiprocessing.Process):
         logging.info(f"controller SUB binding to controller queue {self._conf['Controller']['ip']}:{self._conf['Controller']['port']}")
         self._controller_context = zmq.Context()
         self._controller_socket = self._controller_context.socket(zmq.SUB)
-        self._controller_socket.bind(f"tcp://{self._conf['Controller']['ip']}:{self._conf['Controller']['port']}")
+        self._controller_socket.connect(f"tcp://{self._conf['Controller']['ip']}:{self._conf['Controller']['port']}")
         self._controller_socket.subscribe("")
 
         try:

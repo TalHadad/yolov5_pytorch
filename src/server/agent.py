@@ -55,11 +55,10 @@ class Agent(ABC, multiprocessing.Process):
         self._agent_socket.subscribe("")
 
         # client controller
-        logging.info(
-            f"agent connecting to controller queue {self._conf['Controller']['ip']}:{self._conf['Controller']['port']}")
+        logging.info(f"agent PUB connecting to controller queue {self._conf['Controller']['ip']}:{self._conf['Controller']['port']}")
         self._controller_context = zmq.Context()
         self._controller_socket = self._controller_context.socket(zmq.PUB)
-        self._controller_socket.connect(f"tcp://{self._conf['Controller']['ip']}:{self._conf['Controller']['port']}")
+        self._controller_socket.bind(f"tcp://{self._conf['Controller']['ip']}:{self._conf['Controller']['port']}")
 
         try:
             iter = 0
