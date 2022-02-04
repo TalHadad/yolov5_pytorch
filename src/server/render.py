@@ -32,9 +32,8 @@ class Render(multiprocessing.Process):
             while iter < MAX_ITER:
                 iter += 1
                 logging.info(f'render getting results and image')
-                self.render_msg = receive(self._render_socket)
-                print(f'{self.render_msg}')
-                results, image = self.render_msg.results, self.render_msg.image
+                results = receive(self._render_socket)
+                image = receive(self._render_socket)
 
                 logging.info(f'render rendeting labeled image')
                 self.render(results, image)

@@ -57,8 +57,8 @@ class Detector(multiprocessing.Process, ABC):
                 send(self._agent_socket, location)
 
                 logging.info(f'detector sending results and image to render')
-                render_msg = RenderMsg(results, image)
-                send(self._render_socket, render_msg)#[results, image])
+                send(self._render_socket, results)
+                send(self._render_socket, image)
 
                 logging.info(f'detector sending ack to camera')
                 send(self._detector_socket, 'ack')
