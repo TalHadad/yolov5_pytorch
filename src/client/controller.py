@@ -30,7 +30,7 @@ class Controller(ABC, multiprocessing.Process):
             while iter < MAX_ITER:
                 iter += 1
                 logging.info(f'controller getting action')
-                action = int.from_bytes(self._controller_socket.recv(copy=False, flags=0), "big")
+                action = int.from_bytes(self._controller_socket.recv(copy=False, flags=0), 'big')
 
                 logging.info(f'controller doning action {action}')
                 self.do_action(action)
@@ -38,6 +38,10 @@ class Controller(ABC, multiprocessing.Process):
         except Exception as e:
             logging.warning(f'controller exitting clean, exception {e}')
             traceback.print_exception(type(e), e, e.__traceback__)
+            self.exit_clean()
+
+        finally:
+            logging.warning(f'controller exitting clean')
             self.exit_clean()
 
     @abstractmethod

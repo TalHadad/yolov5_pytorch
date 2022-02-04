@@ -68,6 +68,10 @@ class Detector(multiprocessing.Process, ABC):
             traceback.print_exception(type(e), e, e.__traceback__)
             self.exit_clean()
 
+        finally:
+            logging.warning(f'detector exitting clean')
+            self.exit_clean()
+
     @abstractmethod
     def _get_model(self):
         pass

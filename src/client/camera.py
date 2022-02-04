@@ -45,6 +45,10 @@ class Camera(multiprocessing.Process):
             traceback.print_exception(type(e), e, e.__traceback__)
             self.exit_clean()
 
+        finally:
+            logging.warning(f'camera exitting clean')
+            self.exit_clean()
+
     def exit_clean(self):
         self._detector_context.destroy()
         self.terminate()

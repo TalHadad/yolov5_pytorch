@@ -72,11 +72,15 @@ class Agent(ABC, multiprocessing.Process):
                 logging.info(f'agent choose action: {action}')
 
                 logging.info(f'agent sending action to controller')
-                self._controller_socket.send(bytes(action), flags=0)
+                self._controller_socket.send(action.to_bytes(5, 'big'), flags=0)
 
         except Exception as e:
             logging.warning(f'agent exitting clean, exception {e}')
             traceback.print_exception(type(e), e, e.__traceback__)
+            self.exit_clean()
+
+        finally:
+            logging.warning(f'agent exitting clean')
             self.exit_clean()
 
     @abstractmethod
@@ -355,7 +359,7 @@ class AgentEnv(object):
 
     def init_game(self):
         # game parameters
-        self.last_action = -1
+        self.last_action = 0
         self.last_state = None
         self.done = False
         self.score = 0  # reward range [0] for to optimize negative reward ranges
