@@ -30,7 +30,7 @@ class Controller(ABC, multiprocessing.Process):
             while iter < MAX_ITER:
                 iter += 1
                 logging.info(f'controller getting action')
-                action = int(receive(self._controller_socket))
+                action = int(self._controller_socket.recv())
 
                 logging.info(f'controller doning action')
                 self.do_action(action)
