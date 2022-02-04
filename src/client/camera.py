@@ -36,8 +36,8 @@ class Camera(multiprocessing.Process):
                 send(self._detector_socket, image)
 
                 logging.info(f'camera waiting for detector ack')
-                ack = receive(self._detector_socket)
-                logging.info(f'camera got {ack}')
+                self._detector_socket.recv(copy=False, flags=0)
+                logging.info(f'camera got ack')
 
 
         except Exception as e:
