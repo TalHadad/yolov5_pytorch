@@ -81,10 +81,6 @@ class Detector(multiprocessing.Process, ABC):
         self._agent_context.destroy()
         self.terminate()
 
-    @abstractmethod
-    def get_labels(self):
-        pass
-
 
 class Detector_Yolov5(Detector):
     def __init__(self, conf: dict, target: str, confidence_threshold: float = 0.6):
