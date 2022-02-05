@@ -17,10 +17,10 @@ class JobHandler(multiprocessing.Process):
         self.controller = controller
         self.action = None
 
-    def set_action(action: int) -> None:
+    def set_action(self, action: int) -> None:
         self.action = action
 
-    def run() -> None:
+    def run(self) -> None:
         self.controller.do_action(self.action)
 
 class Controller(multiprocessing.Process):
