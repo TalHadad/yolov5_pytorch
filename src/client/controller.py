@@ -1,5 +1,4 @@
 # controller.py
-from abc import ABC, abstractmethod
 import multiprocessing
 import traceback
 import logging
@@ -12,12 +11,26 @@ logging.basicConfig(level=LOGGING_LEVEL)
 log = logging.getLogger('controller')
 log.setLevel(LOGGING_LEVEL)
 
-class Controller(ABC, multiprocessing.Process):
+class JobHandler(multiprocessing.Process):
+    def __init__(self, controller: Controller):
+        super(Job, self).__init__()
+        self.controller = controller
+        self.action = None
+
+    def set_action(action: int) -> None:
+        self.action = action
+
+    def run() -> None:
+        self.controller.do_action(self.action)
+
+class Controller(multiprocessing.Process):
     def __init__(self, conf: dict):
         super(Controller, self).__init__()
         self._conf = conf
+        self.job_handler = JobHandler(self)
 
     def run(self):
+
         # server controller
         logging.info(f"controller SUB binding to controller queue {self._conf['Controller']['ip']}:{self._conf['Controller']['port']}")
         self._controller_context = zmq.Context()
@@ -32,8 +45,18 @@ class Controller(ABC, multiprocessing.Process):
                 logging.info(f'controller getting action')
                 action = int.from_bytes(self._controller_socket.recv(copy=False, flags=0), 'big')
 
-                logging.info(f'controller doning action {action}')
-                self.do_action(action)
+                #logging.info(f'controller doning action {action}')
+                #self.do_action(action)
+
+                #p = multiprocessing.Process(target=self.do_action, args=(action,))
+                #p.start()
+                if not self.job_handler.is_alive():
+                    logging.info(f'controller doning action {action}')
+                    self.job_handler.set_action(action)
+                    self.job_handler.start()
+                else:
+                    logging.info(f'controller is not doning action {action}, and throw it away.')
+
 
         except Exception as e:
             logging.warning(f'controller exitting clean, exception {e}')
@@ -44,21 +67,17 @@ class Controller(ABC, multiprocessing.Process):
             logging.warning(f'controller exitting clean')
             self.exit_clean()
 
-    @abstractmethod
+
     def do_action(self, action: int) -> None:
         pass
 
     def exit_clean(self):
+        logging.info(f'exiting clean.')
         self._controller_context.destroy()
         #self.terminate()
 
 
-class ControllerSimple(Controller):
-    def do_action(self, action):
-        pass
-
-
 def main():
     conf = ConfigReader().get_params()
-    controller = ControllerSimple(conf=conf)
+    controller = Controller(conf=conf)
     controller.run()

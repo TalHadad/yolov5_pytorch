@@ -7,6 +7,7 @@ import logging
 import time
 from utils_2.logging_level import LOGGING_LEVEL, MAX_ITER
 import RPi.GPIO as GPIO
+from .controller import Controller
 
 GPIO.setmode(GPIO.BOARD)
 
@@ -14,13 +15,13 @@ logging.basicConfig(level=LOGGING_LEVEL)
 log = logging.getLogger('controller_raspi')
 log.setLevel(LOGGING_LEVEL)
 
-class ControllerRPi(object):
+class ControllerRPi(Controller):
     '''
     Raspberry pi controller of pwms and camera
     '''
 
     def __init__(self, conf):
-        self._conf = conf
+        super(ControllerRPi, self).__init__(conf=conf)
         self.pins = {'forward': 12,#11, # 11 = backward (white)
                      'backward': 11,#12, # 12 = forward (purple)
                      'right': 15,#13, # 13 = right (green)
@@ -38,32 +39,6 @@ class ControllerRPi(object):
             pwms[pin] = GPIO.PWM(pins[pin], self.pwm_frequency)
         return pwms
 
-    def run(self):
-        # server controller
-        logging.info(f"controller SUB binding to controller queue {self._conf['Controller']['ip']}:{self._conf['Controller']['port']}")
-        self._controller_context = zmq.Context()
-        self._controller_socket = self._controller_context.socket(zmq.SUB)
-        self._controller_socket.connect(f"tcp://{self._conf['Controller']['ip']}:{self._conf['Controller']['port']}")
-        self._controller_socket.subscribe("")
-
-        try:
-            iter = 0
-            while iter < MAX_ITER:
-                iter += 1
-                logging.info(f'controller getting action')
-                action = int.from_bytes(self._controller_socket.recv(copy=False, flags=0), 'big')
-
-                logging.info(f'controller doning action {action}')
-                self.do_action(action)
-
-        except Exception as e:
-            logging.warning(f'controller exitting clean, exception {e}')
-            traceback.print_exception(type(e), e, e.__traceback__)
-            self.exit_clean()
-
-        finally:
-            logging.warning(f'controller exitting clean')
-            self.exit_clean()
 
     def do_action(self, action: int) -> None:
         '''
@@ -76,12 +51,8 @@ class ControllerRPi(object):
            5 = backward left
            6 = backward right
         '''
-        # no target found
-        if action == -1:
-            logging.info(f"no target found, action is {action} and last state env is None")
-            pass
 
-        # stop (do nothing)
+        # stop (do nothing) when target not moving or not found
         if action == 0:
             logging.debug("target isn't moving: doing nothing.")
             pass
@@ -137,11 +108,10 @@ class ControllerRPi(object):
             self._stop_backward()
 
     def exit_clean(self) -> None:
-        logging.info(f'exiting clean.')
+        super().exit_clean()
         for pin in self.pwms:
             self.pwms[pin].stop()
         GPIO.cleanup()
-        self._controller_context.destroy()
 
     def _wait(self) -> None:
         time.sleep(self.wait_seconds)
