@@ -12,8 +12,8 @@ log = logging.getLogger('controller')
 log.setLevel(LOGGING_LEVEL)
 
 class JobHandler(multiprocessing.Process):
-    def __init__(self, controller: Controller):
-        super(Job, self).__init__()
+    def __init__(self, controller):
+        super(JobHandler, self).__init__()
         self.controller = controller
         self.action = None
 
