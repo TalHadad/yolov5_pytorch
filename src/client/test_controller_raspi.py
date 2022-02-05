@@ -127,6 +127,35 @@ def set_freq_and_duty_cycle():
         print('exiting.')
         pwm.stop()
         GPIO.cleanup()
+
+def test_movement():
+    backward_pin = 11 # white_pin
+    forward_pin = 12 # purple_pin
+    right_pin = 13 # green_pin
+    left_pin = 15 # blue_pin
+
+    seconds = 2
+    freq = 100
+    duty_cycle = 100
+    pin = int(input())
+    try:
+        while pin != -1:
+            GPIO.setup(pin, GPIO.OUT)
+            pwm = GPIO.PWM(pin, freq)
+            pwm.start(duty_cycle)
+            print(f'pin {pin} is now on freq {freq} and duty cycle {duty_cycle} and for the next {seconds} seconds')
+            time.sleep(seconds)
+            pwm.stop()
+            GPIO.cleanup()
+    except:
+        print('exiting.')
+        pwm.stop()
+        GPIO.cleanup()
+    finally:
+        print('exiting.')
+        pwm.stop()
+        GPIO.cleanup()
+
 def frequency_dutycycle_grid_search():
     pin = 12 # 12 = forward pin = purple pin
     seconds = 5
