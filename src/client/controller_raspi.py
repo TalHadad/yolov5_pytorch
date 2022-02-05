@@ -166,42 +166,8 @@ class ControllerRPi(object):
     def _stop_backward(self) -> None:
         self.pwms['backward'].stop()
 
-    def test_pwms(self) -> None:
-        test = int(input())
-        while test != 0:
-            if test == 1:
-                self._move_forward()
-                time.sleep(2)
-                self._stop_forward()
-            elif test == 2:
-                self._move_backward()
-                time.sleep(2)
-                self._stop_backward()
-            elif test == 3:
-                self._move_forward()
-                self._move_right()
-                time.sleep(2)
-                self._stop_forward()
-                self._stop_right()
-            test = int(input())
-        logging.warning(f'controller exitting clean')
-        self.exit_clean()
-
-
-
 
 def main():
     conf = ConfigReader().get_params()
     controller = ControllerRPi(conf=conf)
     controller.run()
-    #controller.test_pwms()
-
-def test_pwms_simple() -> None:
-    pwm_frequency = 100
-    pwm_duty_cycle = 100
-    GPIO.setup(12, GPIO.OUT)
-    pwm = GPIO.PWM(12, pwm_frequency)
-    pwm.start(pwm_duty_cycle)
-    time.sleep(2)
-    pwm.stop()
-    GPIO.cleanup()

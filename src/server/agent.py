@@ -71,7 +71,7 @@ class Agent(ABC, multiprocessing.Process):
                 logging.info(f'agent choosing action')
                 action = self.choose_action(location)
                 logging.info(f'agent choose action: {action}')
-                
+
                 logging.info(f'agent sending action to controller')
                 self._controller_socket.send(action.to_bytes(5, 'big'), flags=0)
 

@@ -137,6 +137,7 @@ def test_movement():
     seconds = 2
     freq = 100
     duty_cycle = 100
+    print(f'Enter pin number to turn on: ')
     pin = int(input())
     try:
         while pin != -1:
@@ -145,14 +146,15 @@ def test_movement():
             pwm.start(duty_cycle)
             print(f'pin {pin} is now on freq {freq} and duty cycle {duty_cycle} and for the next {seconds} seconds')
             time.sleep(seconds)
+            pwm.stop()
+            print(f'pin {pin} stopped.')
+            print(f'Enter pin number to turn on: ')
             pin = int(input())
     except:
         print('exiting.')
-        pwm.stop()
         GPIO.cleanup()
     finally:
         print('exiting.')
-        pwm.stop()
         GPIO.cleanup()
 
 def frequency_dutycycle_grid_search():
