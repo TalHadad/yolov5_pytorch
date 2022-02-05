@@ -12,12 +12,9 @@ log = logging.getLogger('controller')
 log.setLevel(LOGGING_LEVEL)
 
 class JobHandler(multiprocessing.Process):
-    def __init__(self, controller):
+    def __init__(self, controller, action=None):
         super(JobHandler, self).__init__()
         self.controller = controller
-        self.action = None
-
-    def set_action(self, action: int) -> None:
         self.action = action
 
     def run(self) -> None:
@@ -52,7 +49,7 @@ class Controller(multiprocessing.Process):
                 #p.start()
                 if not self.job_handler.is_alive():
                     logging.info(f'controller doning action {action}')
-                    self.job_handler.set_action(action)
+                    self.job_handler = JobHandler(self, action)
                     self.job_handler.start()
                 else:
                     logging.info(f'controller is not doning action {action}, and throw it away.')
