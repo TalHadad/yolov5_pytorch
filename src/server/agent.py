@@ -65,15 +65,13 @@ class Agent(ABC, multiprocessing.Process):
             iter = 0
             while iter < MAX_ITER:
                 iter += 1
-                # logging.info(f'agent getting location')
-                # location = receive(self._agent_socket)
-                #
-                # logging.info(f'agent choosing action')
-                # action = self.choose_action(location)
-                # logging.info(f'agent choose action: {action}')
-                import time
-                time.sleep(10)
-                action = 4
+                logging.info(f'agent getting location')
+                location = receive(self._agent_socket)
+
+                logging.info(f'agent choosing action')
+                action = self.choose_action(location)
+                logging.info(f'agent choose action: {action}')
+                
                 logging.info(f'agent sending action to controller')
                 self._controller_socket.send(action.to_bytes(5, 'big'), flags=0)
 
