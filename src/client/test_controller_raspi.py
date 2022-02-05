@@ -145,8 +145,7 @@ def test_movement():
             pwm.start(duty_cycle)
             print(f'pin {pin} is now on freq {freq} and duty cycle {duty_cycle} and for the next {seconds} seconds')
             time.sleep(seconds)
-            pwm.stop()
-            GPIO.cleanup()
+            pin = int(input())
     except:
         print('exiting.')
         pwm.stop()
@@ -196,6 +195,7 @@ def frequency_dutycycle_grid_search():
         GPIO.cleanup()
 if __name__ == '__main__':
     #main()
-    test_forward()
+    #test_forward()
+    test_movement()
     #set_freq_and_duty_cycle()
     #frequency_dutycycle_grid_search()

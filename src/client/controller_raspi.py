@@ -21,10 +21,10 @@ class ControllerRPi(object):
 
     def __init__(self, conf):
         self._conf = conf
-        self.pins = {'forward': 11, # 11 = backward (white)
-                     'backward': 12, # 12 = forward (purple)
-                     'right': 13, # 13 = right (green)
-                     'left': 15} # 15 = left (blue)
+        self.pins = {'forward': 12#11, # 11 = backward (white)
+                     'backward': 11#12, # 12 = forward (purple)
+                     'right': 15#13, # 13 = right (green)
+                     'left': 13#15} # 15 = left (blue)
         self.wait_seconds = 2
         self.pwm_frequency = 100
         self.pwm_duty_cycle = 100
