@@ -3,6 +3,7 @@ import multiprocessing
 import traceback
 import logging
 import zmq
+import time
 from utils_2.comunication import receive
 from utils_2.config_parser import ConfigReader
 from utils_2.logging_level import LOGGING_LEVEL, MAX_ITER
@@ -19,6 +20,8 @@ class JobHandler(multiprocessing.Process):
 
     def run(self) -> None:
         self.controller.do_action(self.action)
+
+
 
 class Controller(multiprocessing.Process):
     def __init__(self, conf: dict):
@@ -48,11 +51,11 @@ class Controller(multiprocessing.Process):
                 #p = multiprocessing.Process(target=self.do_action, args=(action,))
                 #p.start()
                 if not self.job_handler.is_alive():
-                    logging.info(f'controller doning action {action}')
+                    logging.info(f'controller doning action {iter}: {action}')
                     self.job_handler = JobHandler(self, action)
                     self.job_handler.start()
                 else:
-                    logging.info(f'controller is not doning action {action}, and throw it away.')
+                    logging.info(f'controller is not doning action {iter}: {action}, and throw it away.')
 
 
         except Exception as e:

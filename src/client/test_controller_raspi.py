@@ -80,7 +80,7 @@ def test_forward():
             pwms[pwm_num].start(100)
 
             i=0
-            seconds = 50
+            seconds = 10
             while i<seconds:
                 i+=1
                 print(f'{action_and_color_pwm[pwm_num]} ({pwm_num}) sleep second {i}/{seconds}')

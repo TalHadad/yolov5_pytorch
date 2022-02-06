@@ -52,7 +52,7 @@ class ControllerRPi(Controller):
            5 = backward left
            6 = backward right
         '''
-        logging.info(f'controller doing action {action}')
+        logging.info(f'controller raspi doing action {action}')
         # stop (do nothing) when target not moving or not found
         if action == 0:
             logging.debug("target isn't moving: doing nothing.")
