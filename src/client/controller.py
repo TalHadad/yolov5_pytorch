@@ -22,6 +22,7 @@ class JobHandler(multiprocessing.Process):
         self.controller.do_action(self.action)
 
 
+
 class Controller(multiprocessing.Process):
     def __init__(self, conf: dict):
         super(Controller, self).__init__()

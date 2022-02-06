@@ -37,7 +37,7 @@ class ControllerRPi(Controller):
         for pin in pins:
             GPIO.setup(pins[pin], GPIO.OUT)
             pwms[pin] = GPIO.PWM(pins[pin], self.pwm_frequency)
-            pwms[pin].start(0)
+            #pwms[pin].start(0)
         return pwms
 
 
@@ -118,9 +118,11 @@ class ControllerRPi(Controller):
         time.sleep(self.wait_seconds)
 
     def _move_forward(self) -> None:
-        self.pwms['forward'].ChangeDutyCycle(self.pwm_duty_cycle)
+        #self.pwms['forward'].ChangeDutyCycle(self.pwm_duty_cycle)
+        self.pwms['forward'].start(self.pwm_duty_cycle)
     def _stop_forward(self) -> None:
-        self.pwms['forward'].ChangeDutyCycle(0)
+        #self.pwms['forward'].ChangeDutyCycle(0)
+        self.pwms['forward'].stop()
 
     def _move_left(self) -> None:
         self.pwms['left'].ChangeDutyCycle(self.pwm_duty_cycle)
