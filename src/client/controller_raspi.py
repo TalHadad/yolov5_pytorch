@@ -121,7 +121,7 @@ class ControllerRPi(Controller):
         #self.pwms['forward'].ChangeDutyCycle(self.pwm_duty_cycle)
         self.pwms['forward'].start(self.pwm_duty_cycle)
     def _stop_forward(self) -> None:
-        #self.pwms['forward'].ChangeDutyCycle(0)
+        self.pwms['forward'].ChangeDutyCycle(0)
         self.pwms['forward'].stop()
 
     def _move_left(self) -> None:
