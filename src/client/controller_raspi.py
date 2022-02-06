@@ -37,6 +37,7 @@ class ControllerRPi(Controller):
         for pin in pins:
             GPIO.setup(pins[pin], GPIO.OUT)
             pwms[pin] = GPIO.PWM(pins[pin], self.pwm_frequency)
+            pwms[pin].start(0)
         return pwms
 
 
@@ -51,7 +52,7 @@ class ControllerRPi(Controller):
            5 = backward left
            6 = backward right
         '''
-
+        logging.info(f'controller doing action {action}')
         # stop (do nothing) when target not moving or not found
         if action == 0:
             logging.debug("target isn't moving: doing nothing.")
@@ -117,24 +118,24 @@ class ControllerRPi(Controller):
         time.sleep(self.wait_seconds)
 
     def _move_forward(self) -> None:
-        self.pwms['forward'].start(self.pwm_duty_cycle)
+        self.pwms['forward'].ChangeDutyCycle(self.pwm_duty_cycle)
     def _stop_forward(self) -> None:
-        self.pwms['forward'].stop()
+        self.pwms['forward'].ChangeDutyCycle(0)
 
     def _move_left(self) -> None:
-        self.pwms['left'].start(self.pwm_duty_cycle)
+        self.pwms['left'].ChangeDutyCycle(self.pwm_duty_cycle)
     def _stop_left(self) -> None:
-        self.pwms['left'].stop()
+        self.pwms['left'].ChangeDutyCycle(0)
 
     def _move_right(self) -> None:
-        self.pwms['right'].start(self.pwm_duty_cycle)
+        self.pwms['right'].ChangeDutyCycle(self.pwm_duty_cycle)
     def _stop_right(self) -> None:
-        self.pwms['right'].stop()
+        self.pwms['right'].ChangeDutyCycle(0)
 
     def _move_backward(self) -> None:
-        self.pwms['backward'].start(self.pwm_duty_cycle)
+        self.pwms['backward'].ChangeDutyCycle(self.pwm_duty_cycle)
     def _stop_backward(self) -> None:
-        self.pwms['backward'].stop()
+        self.pwms['backward'].ChangeDutyCycle(0)
 
 
 def main():
