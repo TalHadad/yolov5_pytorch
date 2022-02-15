@@ -144,3 +144,44 @@ def main():
     conf = ConfigReader().get_params()
     controller = ControllerRPi(conf=conf)
     controller.run()
+
+if __name__ == '__main__':
+    conf = ConfigReader().get_params()
+    controller = ControllerRPi(conf=conf)
+    test_do_action_interactive_program(controller)
+
+def test_do_action_interactive_program(controller: Controller):
+    '''
+    Move the car acording to action number:
+        0 = stay
+        1 = forward
+        2 = forward left
+        3 = forward right
+        4 = backward
+        5 = backward left
+        6 = backward right
+    '''
+    action_text_map = {
+        0 : 'stay'
+        1 : 'forward'
+        2 : 'forward left'
+        3 : 'forward right'
+        4 : 'backward'
+        5 : 'backward left'
+        6 : 'backward right'
+    }
+    print(f'Enter action number to do (0-6 or -1 to exit): ')
+    action = int(input())
+    try:
+        while action != -1:
+            print(f'action {action} ({action_text_map[action]}) is been done.')
+            controller.do_action(action)
+            print(f'action {action} ({action_text_map[action]}) has ended.')
+            print(f'Enter action number to do (0-6 or -1 to exit): ')
+            pin = int(input())
+    except:
+        print('exiting.')
+        controller.exit_clean()
+    finally:
+        print('exiting.')
+        controller.exit_clean()

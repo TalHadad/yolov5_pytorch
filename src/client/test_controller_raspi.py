@@ -198,6 +198,6 @@ def frequency_dutycycle_grid_search():
 if __name__ == '__main__':
     #main()
     #test_forward()
-    #test_movement()
     #set_freq_and_duty_cycle()
     #frequency_dutycycle_grid_search()
+    #test_movment()
